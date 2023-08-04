@@ -20,7 +20,52 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1Mo-Lj-4cO">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <color key="backgroundColor" name="YP Background"/>
-                                <color key="sectionIndexBackgroundColor" name="YP Background"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ImagesListCell" rowHeight="224" id="83I-Yl-ur0" customClass="ImagesListCell" customModule="ImageFeed" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="224"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="83I-Yl-ur0" id="g2w-RI-NM8">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="224"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="MD7-eG-D8h">
+                                                    <rect key="frame" x="16" y="4" width="361" height="216"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </imageView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QC5-yw-r72" userLabel="Like Button">
+                                                    <rect key="frame" x="333" y="4" width="44" height="44"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="like_button_on"/>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="27 августа 2023" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yw9-B4-K4C" userLabel="Date Label">
+                                                    <rect key="frame" x="24" y="196" width="102" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" name="YP White"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="MD7-eG-D8h" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Yw9-B4-K4C" secondAttribute="trailing" constant="8" id="1jg-LR-6BA"/>
+                                                <constraint firstItem="MD7-eG-D8h" firstAttribute="trailing" secondItem="QC5-yw-r72" secondAttribute="trailing" id="4Eb-rs-6nC"/>
+                                                <constraint firstItem="MD7-eG-D8h" firstAttribute="top" secondItem="g2w-RI-NM8" secondAttribute="top" constant="4" id="DJR-qI-Q2u"/>
+                                                <constraint firstAttribute="trailing" secondItem="MD7-eG-D8h" secondAttribute="trailing" constant="16" id="VUI-kw-8rV"/>
+                                                <constraint firstItem="QC5-yw-r72" firstAttribute="top" secondItem="MD7-eG-D8h" secondAttribute="top" id="Vsc-qQ-L94"/>
+                                                <constraint firstAttribute="bottom" secondItem="MD7-eG-D8h" secondAttribute="bottom" constant="4" id="WKx-a0-Yac"/>
+                                                <constraint firstItem="MD7-eG-D8h" firstAttribute="bottom" secondItem="Yw9-B4-K4C" secondAttribute="bottom" constant="8" id="WlT-3E-VfB"/>
+                                                <constraint firstItem="Yw9-B4-K4C" firstAttribute="leading" secondItem="MD7-eG-D8h" secondAttribute="leading" constant="8" id="gQ4-Ze-DN9"/>
+                                                <constraint firstItem="MD7-eG-D8h" firstAttribute="leading" secondItem="g2w-RI-NM8" secondAttribute="leading" constant="16" id="lXu-OS-Po2"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" name="YP Background"/>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="3lJ-vP-jIC"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="0zf-l0-PWP"/>
@@ -30,7 +75,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="YP Background"/>
                         <constraints>
-                            <constraint firstItem="1Mo-Lj-4cO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="DbS-C0-GaL"/>
+                            <constraint firstAttribute="top" secondItem="1Mo-Lj-4cO" secondAttribute="top" id="DbS-C0-GaL"/>
                             <constraint firstAttribute="bottom" secondItem="1Mo-Lj-4cO" secondAttribute="bottom" id="JNb-f0-duK"/>
                             <constraint firstItem="1Mo-Lj-4cO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="KDQ-vm-HzO"/>
                             <constraint firstAttribute="trailing" secondItem="1Mo-Lj-4cO" secondAttribute="trailing" id="nua-3p-vRr"/>
@@ -42,12 +87,17 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-25" y="4"/>
+            <point key="canvasLocation" x="-26.717557251908396" y="2.8169014084507045"/>
         </scene>
     </scenes>
     <resources>
+        <image name="0" width="200" height="132"/>
+        <image name="like_button_on" width="44" height="44"/>
         <namedColor name="YP Background">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="YP White">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
