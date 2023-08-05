@@ -49,24 +49,35 @@
                                                     <color key="textColor" name="YP White"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lQS-6y-5ru" userLabel="Gradient View">
+                                                    <rect key="frame" x="0.0" y="194" width="393" height="30"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="MRg-76-xjk"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="MD7-eG-D8h" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Yw9-B4-K4C" secondAttribute="trailing" constant="8" id="1jg-LR-6BA"/>
                                                 <constraint firstItem="MD7-eG-D8h" firstAttribute="trailing" secondItem="QC5-yw-r72" secondAttribute="trailing" id="4Eb-rs-6nC"/>
+                                                <constraint firstAttribute="trailing" secondItem="lQS-6y-5ru" secondAttribute="trailing" id="8Zv-n4-XFv"/>
                                                 <constraint firstItem="MD7-eG-D8h" firstAttribute="top" secondItem="g2w-RI-NM8" secondAttribute="top" constant="4" id="DJR-qI-Q2u"/>
+                                                <constraint firstAttribute="bottom" secondItem="lQS-6y-5ru" secondAttribute="bottom" id="Fe4-A4-fC8"/>
                                                 <constraint firstAttribute="trailing" secondItem="MD7-eG-D8h" secondAttribute="trailing" constant="16" id="VUI-kw-8rV"/>
                                                 <constraint firstItem="QC5-yw-r72" firstAttribute="top" secondItem="MD7-eG-D8h" secondAttribute="top" id="Vsc-qQ-L94"/>
                                                 <constraint firstAttribute="bottom" secondItem="MD7-eG-D8h" secondAttribute="bottom" constant="4" id="WKx-a0-Yac"/>
                                                 <constraint firstItem="MD7-eG-D8h" firstAttribute="bottom" secondItem="Yw9-B4-K4C" secondAttribute="bottom" constant="8" id="WlT-3E-VfB"/>
                                                 <constraint firstItem="Yw9-B4-K4C" firstAttribute="leading" secondItem="MD7-eG-D8h" secondAttribute="leading" constant="8" id="gQ4-Ze-DN9"/>
                                                 <constraint firstItem="MD7-eG-D8h" firstAttribute="leading" secondItem="g2w-RI-NM8" secondAttribute="leading" constant="16" id="lXu-OS-Po2"/>
+                                                <constraint firstItem="lQS-6y-5ru" firstAttribute="leading" secondItem="g2w-RI-NM8" secondAttribute="leading" id="vXx-2u-LID"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" name="YP Background"/>
                                         <connections>
                                             <outlet property="cellImage" destination="MD7-eG-D8h" id="YRS-wM-aqz"/>
                                             <outlet property="dateLabel" destination="Yw9-B4-K4C" id="wYL-Rl-7YU"/>
+                                            <outlet property="gradientView" destination="lQS-6y-5ru" id="StZ-Kn-01B"/>
                                             <outlet property="likeButton" destination="QC5-yw-r72" id="gid-2R-eb6"/>
                                         </connections>
                                     </tableViewCell>
