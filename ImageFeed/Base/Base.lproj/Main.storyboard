@@ -144,6 +144,35 @@
             </objects>
             <point key="canvasLocation" x="-1127" y="3"/>
         </scene>
+        <!--Single Image View Controller-->
+        <scene sceneID="TeP-fE-KZQ">
+            <objects>
+                <viewController id="MgZ-e4-a7g" customClass="SingleImageViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="amZ-We-MTP">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Alc-Am-5LW">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Gbf-27-hfk"/>
+                        <color key="backgroundColor" name="YP Background"/>
+                        <constraints>
+                            <constraint firstItem="Gbf-27-hfk" firstAttribute="bottom" secondItem="Alc-Am-5LW" secondAttribute="bottom" id="HZe-t4-Ncn"/>
+                            <constraint firstItem="Gbf-27-hfk" firstAttribute="trailing" secondItem="Alc-Am-5LW" secondAttribute="trailing" id="X4F-vJ-1vv"/>
+                            <constraint firstItem="Alc-Am-5LW" firstAttribute="top" secondItem="Gbf-27-hfk" secondAttribute="top" id="lCY-8A-SfL"/>
+                            <constraint firstItem="Alc-Am-5LW" firstAttribute="leading" secondItem="Gbf-27-hfk" secondAttribute="leading" id="prf-eY-BPp"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="Alc-Am-5LW" id="qOi-1A-xql"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tuy-6n-Jwa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="339.69465648854958" y="-881.69014084507046"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="57s-1M-7oI">
             <objects>
