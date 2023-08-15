@@ -100,6 +100,7 @@
                     <navigationItem key="navigationItem" id="alb-aR-pxF"/>
                     <connections>
                         <outlet property="tableView" destination="1Mo-Lj-4cO" id="elZ-wD-CVA"/>
+                        <segue destination="MgZ-e4-a7g" kind="show" identifier="ShowSingleImage" id="NNY-Dx-rgN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -153,7 +154,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Alc-Am-5LW">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gbf-27-hfk"/>
@@ -165,6 +166,7 @@
                             <constraint firstItem="Alc-Am-5LW" firstAttribute="leading" secondItem="Gbf-27-hfk" secondAttribute="leading" id="prf-eY-BPp"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="o3o-KR-XPU"/>
                     <connections>
                         <outlet property="imageView" destination="Alc-Am-5LW" id="qOi-1A-xql"/>
                     </connections>
