@@ -23,38 +23,50 @@ final class SingleImageViewController: UIViewController {
     }
     
     @IBOutlet private var imageView: UIImageView!
-    
     @IBOutlet weak var scrollView: UIScrollView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+            //кодом дробные значения, в сториборде int
         scrollView.minimumZoomScale = 0.1
-        scrollView.maximumZoomScale = 1.25
+        scrollView.maximumZoomScale = 1.25//выбирать значение для зума больше 1.25 pt обычно не стоит.
         imageView.image = image
         rescaleAndCenterImageInScrollView(image: image)
     }
+    
     @IBAction private func didTapBackButton(_ sender: UIButton, forEvent event: UIEvent) {
         dismiss(animated: true, completion: nil)
     }
-    
-    private func rescaleAndCenterImageInScrollView(image: UIImage) {
-        let minZoomScale = scrollView.minimumZoomScale
-        let maxZoomScale = scrollView.maximumZoomScale
-        view.layoutIfNeeded()
-        let visibleRectSize = scrollView.bounds.size
-        let imageSize = image.size
-        let hScale = visibleRectSize.width / imageSize.width
-        let vScale = visibleRectSize.height / imageSize.height
-        let scale = min(maxZoomScale, max(minZoomScale, max(hScale, vScale)))
-        scrollView.setZoomScale(scale, animated: false)
-        scrollView.layoutIfNeeded()
-        let newContentSize = scrollView.contentSize
-        let x = (newContentSize.width - visibleRectSize.width) / 2
-        let y = (newContentSize.height - visibleRectSize.height) / 2
-        scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
+    @IBAction func didTapShareButton(_ sender: UIButton) {
+        let share = UIActivityViewController(
+            activityItems: [image ?? <#default value#>],//defaultImage
+            applicationActivities: nil
+        )
+        present(share, animated: true, completion: nil)
     }
     
+    private func rescaleAndCenterImageInScrollView(image: UIImage) {
+        //границы возможных значений зума для scrollView:
+        let minZoomScale = scrollView.minimumZoomScale
+        let maxZoomScale = scrollView.maximumZoomScale
+        view.layoutIfNeeded()//форсирует пересчёт фреймов,так как scrollView.superview — это и есть view. Если этого не сделать, то scrollView.frame (и, как следствие, scrollView.bounds) будет содержать относительно случайное значение.
+        let visibleRectSize = scrollView.bounds.size//формулa вычисления скейла
+        let imageSize = image.size
+        let hScale = visibleRectSize.width / imageSize.width//для ширины (горизонтальной оси)
+        let vScale = visibleRectSize.height / imageSize.height//для высоты (вертикальной оси)
+        //чтобы изображение заняло всё доступное пространство, минимальный скейл должен равняться максимальному из двух значений выше:
+        let scale = min(maxZoomScale, max(minZoomScale, max(hScale, vScale)))
+        //применяем вычисленный скейл к scrollView,но эта функцтя не меняет scrollView.contentSize мгновенно. Он лишь помечает, что данные лэйаута устарели, и что при следующей итерации лэйаута экрана значение scale будет считано и применено к содержимому:
+        scrollView.setZoomScale(scale, animated: false)
+        scrollView.layoutIfNeeded()//заставляет систему пересчитать размеры и позиции всех саб-вью этой вью (View) и применить новые значения фреймов ко всем саб-вью.
+        let newContentSize = scrollView.contentSize//не обновится сразу
+        //Чтобы спозиционировать картинку по центру скролл-вью, мы должны сместить так:
+        let x = (newContentSize.width - visibleRectSize.width) / 2
+        let y = (newContentSize.height - visibleRectSize.height) / 2
+        scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)//нужно задать нашей картинке, чтобы центр увеличенного изображения совпал с центром экрана.
+    }
 }
-
+//метод делегата, который сообщит ScrollView, какую именно View нужно увеличивать в момент зума
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView

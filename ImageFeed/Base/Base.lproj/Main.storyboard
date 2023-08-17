@@ -154,6 +154,9 @@
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="share_ic"/>
+                                <connections>
+                                    <action selector="didTapShareButton:" destination="MgZ-e4-a7g" eventType="touchUpInside" id="188-vO-7Bb"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gbf-27-hfk"/>
