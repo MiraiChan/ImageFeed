@@ -29,20 +29,20 @@ final class ImagesListViewController: UIViewController {
     //чтобы открывалась нужная нам картинка:
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         //проверяем идентификатор сегвея, поскольку может быть больше одного сегвея, выходящего из нашего контроллера:
-            if segue.identifier == ShowSingleImageSegueIdentifier {
-                //делаем преобразования типа для свойства segue.destination, мы переходим  из таблицы к SingleImageViewController — поэтому такое преобразование типа безопасно. Если окажется, что мы выбрали неправильный сегвей или не настроили его надлежащим образом, то код в данной строчке закрэшится. Мы сразу же узнаем о проблеме и сможем быстро её исправить:
-                let viewController = segue.destination as! SingleImageViewController
-                //Делаем преобразование типа для аргумента sender (мы ожидаем, что там будет indexPath). Более того: мы не сможем сконфигурировать переход верно, если там окажется что-то другое:
-                let indexPath = sender as! IndexPath
-                //получаем по индексу название картинки и саму картинку из ресурсов приложения:
-                let image = UIImage(named: photosName[indexPath.row])
-                //передаём эту картинку в imageView внутри SingleImageViewController:
-                viewController.image = image
-            } else {
-                //если это неизвестный сегвей, есть вероятность, что он был определён суперклассом (то есть родительским классом). В таком случае мы должны передать ему управление:
-                super.prepare(for: segue, sender: sender)
-            }
+        if segue.identifier == ShowSingleImageSegueIdentifier {
+            //делаем преобразования типа для свойства segue.destination, мы переходим  из таблицы к SingleImageViewController — поэтому такое преобразование типа безопасно. Если окажется, что мы выбрали неправильный сегвей или не настроили его надлежащим образом, то код в данной строчке закрэшится. Мы сразу же узнаем о проблеме и сможем быстро её исправить:
+            let viewController = segue.destination as! SingleImageViewController
+            //Делаем преобразование типа для аргумента sender (мы ожидаем, что там будет indexPath). Более того: мы не сможем сконфигурировать переход верно, если там окажется что-то другое:
+            let indexPath = sender as! IndexPath
+            //получаем по индексу название картинки и саму картинку из ресурсов приложения:
+            let image = UIImage(named: photosName[indexPath.row])
+            //передаём эту картинку в imageView внутри SingleImageViewController:
+            viewController.image = image
+        } else {
+            //если это неизвестный сегвей, есть вероятность, что он был определён суперклассом (то есть родительским классом). В таком случае мы должны передать ему управление:
+            super.prepare(for: segue, sender: sender)
         }
+    }
 }
 
 extension ImagesListViewController: UITableViewDataSource {

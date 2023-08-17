@@ -118,8 +118,8 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="Lo6-JD-Ssf">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Alc-Am-5LW">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Alc-Am-5LW">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="414"/>
                                     </imageView>
                                 </subviews>
                                 <constraints>
@@ -146,11 +146,22 @@
                                     <action selector="didTapBackButton:forEvent:" destination="MgZ-e4-a7g" eventType="touchUpInside" id="ADB-MG-PIj"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oxf-Xu-eCJ" userLabel="ShareButton">
+                                <rect key="frame" x="171.66666666666666" y="766" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="LjD-HT-dGu"/>
+                                    <constraint firstAttribute="height" constant="50" id="OvQ-71-hEx"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="share_ic"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Gbf-27-hfk"/>
                         <color key="backgroundColor" name="YP Background"/>
                         <constraints>
                             <constraint firstItem="Gbf-27-hfk" firstAttribute="trailing" secondItem="Lo6-JD-Ssf" secondAttribute="trailing" id="IWf-X0-WKs"/>
+                            <constraint firstItem="oxf-Xu-eCJ" firstAttribute="centerX" secondItem="Gbf-27-hfk" secondAttribute="centerX" id="IoL-0a-fbf"/>
+                            <constraint firstItem="Gbf-27-hfk" firstAttribute="bottom" secondItem="oxf-Xu-eCJ" secondAttribute="bottom" constant="36" id="Qde-GR-hT9"/>
                             <constraint firstItem="yjI-W9-QaM" firstAttribute="leading" secondItem="Gbf-27-hfk" secondAttribute="leading" constant="8" id="XOz-dc-3xY"/>
                             <constraint firstAttribute="bottom" secondItem="Lo6-JD-Ssf" secondAttribute="bottom" id="dHj-se-9DU"/>
                             <constraint firstItem="Lo6-JD-Ssf" firstAttribute="leading" secondItem="Gbf-27-hfk" secondAttribute="leading" id="dJO-SO-uyp"/>
@@ -235,6 +246,7 @@
         <image name="0" width="200" height="132"/>
         <image name="backwards_ic" width="24" height="24"/>
         <image name="like_button_on" width="44" height="44"/>
+        <image name="share_ic" width="50" height="50"/>
         <image name="tab_editorial_active" width="20" height="22"/>
         <image name="tab_profile_active" width="30" height="30"/>
         <namedColor name="YP Background">
