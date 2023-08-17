@@ -115,10 +115,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Alc-Am-5LW">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" minimumZoomScale="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="Lo6-JD-Ssf">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yjI-W9-QaM">
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="414" placeholderIntrinsicHeight="414" image="0" translatesAutoresizingMaskIntoConstraints="NO" id="Alc-Am-5LW">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="414"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Alc-Am-5LW" secondAttribute="bottom" id="6MG-nl-1a4"/>
+                                    <constraint firstItem="Alc-Am-5LW" firstAttribute="leading" secondItem="Lo6-JD-Ssf" secondAttribute="leading" id="NVZ-5O-Coa"/>
+                                    <constraint firstAttribute="trailing" secondItem="Alc-Am-5LW" secondAttribute="trailing" id="vke-7H-w31"/>
+                                    <constraint firstItem="Alc-Am-5LW" firstAttribute="top" secondItem="Lo6-JD-Ssf" secondAttribute="top" id="xGo-Dv-pVK"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="kTt-lz-1lv"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Q4P-JU-Tzg"/>
+                                <connections>
+                                    <outlet property="delegate" destination="MgZ-e4-a7g" id="WKt-5S-gkk"/>
+                                </connections>
+                            </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yjI-W9-QaM" userLabel="BackwardButton">
                                 <rect key="frame" x="8" y="8" width="48" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="48" id="0dR-sO-V3r"/>
@@ -134,22 +150,23 @@
                         <viewLayoutGuide key="safeArea" id="Gbf-27-hfk"/>
                         <color key="backgroundColor" name="YP Background"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="Alc-Am-5LW" secondAttribute="bottom" id="HZe-t4-Ncn"/>
-                            <constraint firstAttribute="trailing" secondItem="Alc-Am-5LW" secondAttribute="trailing" id="X4F-vJ-1vv"/>
+                            <constraint firstItem="Gbf-27-hfk" firstAttribute="trailing" secondItem="Lo6-JD-Ssf" secondAttribute="trailing" id="IWf-X0-WKs"/>
                             <constraint firstItem="yjI-W9-QaM" firstAttribute="leading" secondItem="Gbf-27-hfk" secondAttribute="leading" constant="8" id="XOz-dc-3xY"/>
+                            <constraint firstAttribute="bottom" secondItem="Lo6-JD-Ssf" secondAttribute="bottom" id="dHj-se-9DU"/>
+                            <constraint firstItem="Lo6-JD-Ssf" firstAttribute="leading" secondItem="Gbf-27-hfk" secondAttribute="leading" id="dJO-SO-uyp"/>
                             <constraint firstItem="yjI-W9-QaM" firstAttribute="top" secondItem="Gbf-27-hfk" secondAttribute="top" constant="8" id="iTs-Go-Bwz"/>
-                            <constraint firstItem="Alc-Am-5LW" firstAttribute="top" secondItem="amZ-We-MTP" secondAttribute="top" id="lCY-8A-SfL"/>
-                            <constraint firstItem="Alc-Am-5LW" firstAttribute="leading" secondItem="amZ-We-MTP" secondAttribute="leading" id="prf-eY-BPp"/>
+                            <constraint firstItem="Lo6-JD-Ssf" firstAttribute="top" secondItem="amZ-We-MTP" secondAttribute="top" id="jBH-UQ-Wv4"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="o3o-KR-XPU"/>
                     <connections>
                         <outlet property="imageView" destination="Alc-Am-5LW" id="qOi-1A-xql"/>
+                        <outlet property="scrollView" destination="Lo6-JD-Ssf" id="aZS-ES-bog"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tuy-6n-Jwa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="339.69465648854958" y="-881.69014084507046"/>
+            <point key="canvasLocation" x="2223.6641221374043" y="2.8169014084507045"/>
         </scene>
         <!--Profile-->
         <scene sceneID="5U9-40-H2U">
@@ -165,7 +182,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HsI-SW-7JN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1279" y="736"/>
+            <point key="canvasLocation" x="-1127" y="970"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Pyq-MQ-fD8">
@@ -192,7 +209,6 @@
         <!--Navigation Controller-->
         <scene sceneID="57s-1M-7oI">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HNq-Oj-zk6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mdv-k8-V9z" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="H33-fz-k7d"/>
                     <toolbarItems/>
@@ -210,6 +226,7 @@
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="EEi-Au-il8"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HNq-Oj-zk6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="351.90839694656489" y="2.8169014084507045"/>
         </scene>
