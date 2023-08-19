@@ -8,14 +8,24 @@
 import Foundation
 import UIKit
 
-final class ViewController: UIViewController {
-    private var label: UILabel?
+final class ProfileViewController: UIViewController {
+    private var label1: UILabel?
+    private var label2: UILabel?
+    private var label3: UILabel?
+    private let imageView = UIImageView()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupImageView()
+        setupLabel()
+        setupButton()
         
-        let profileImage = UIImage(systemName: "person.crop.circle.fill")
-        let imageView = UIImageView(image: profileImage)
+    }
+    
+    func setupImageView() {
+        let profileImage = UIImage(named: "profileImage")
+        imageView.image = profileImage
         imageView.tintColor = .gray
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
@@ -23,15 +33,56 @@ final class ViewController: UIViewController {
         imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+    }
+    
+    func setupLabel() {
+        let label1 = UILabel()
+        label1.text = "Екатерина Новикова"
+        label1.textColor = UIColor(named: "YP White")
+        // Установка стиля, размера шрифта, веса шрифта и высоты строки
+        let font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 18 / font.pointSize // Рассчитываем множитель для line height
+        let attributes: [NSAttributedString.Key : Any] = [
+            .font: font,
+            .paragraphStyle: paragraphStyle
+        ]
+        label1.attributedText = NSAttributedString(string: label1.text ?? "", attributes: attributes)
         
-        let label = UILabel()
-        label.text = "Name"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label)
-        label.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
-        self.label = label
+        label1.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label1)
+        label1.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
+        label1.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
+        self.label1 = label1
         
+        let label2 = UILabel()
+        label2.text = "@ekaterina_nov"
+        label2.textColor = UIColor(named: "YP Gray")
+        let font2 = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
+        let attributes2: [NSAttributedString.Key: Any] = [
+            .font: font2,
+            .paragraphStyle: paragraphStyle
+        ]
+        label2.attributedText = NSAttributedString(string: label2.text ?? "", attributes: attributes2)
+        label2.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label2)
+        label2.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
+        label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 20).isActive = true
+        self.label2 = label2
+        
+        let label3 = UILabel()
+        label3.text = "Hello, world!"
+        label3.textColor = UIColor(named: "YP White")
+        let font3 = UIFont.systemFont(ofSize: 13, weight: .regular)
+        label3.font = font3
+        label3.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label3)
+        label3.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
+        label3.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 20).isActive = true
+        self.label3 = label3
+    }
+    
+    func setupButton() {
         let button = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward")!,
             target: self,
@@ -47,8 +98,8 @@ final class ViewController: UIViewController {
     @objc
     private func didTapButton() {
         // Решение 1
-        label?.removeFromSuperview()
-        label = nil
+        label1?.removeFromSuperview()
+        label1 = nil
         
         // Решение 2
         for view in view.subviews {
