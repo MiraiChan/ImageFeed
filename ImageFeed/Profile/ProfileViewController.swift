@@ -10,8 +10,8 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     private var label1: UILabel?
-    private var label2: UILabel?
-    private var label3: UILabel?
+    private var label2 = UILabel()
+    private var label3 = UILabel()
     private let imageView = UIImageView()
     
     
@@ -23,7 +23,7 @@ final class ProfileViewController: UIViewController {
         
     }
     
-    func setupImageView() {
+    private func setupImageView() {
         let profileImage = UIImage(named: "profileImage")
         imageView.image = profileImage
         imageView.tintColor = .gray
@@ -35,14 +35,13 @@ final class ProfileViewController: UIViewController {
         imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
     }
     
-    func setupLabel() {
+    private func setupLabel() {
         let label1 = UILabel()
         label1.text = "Екатерина Новикова"
         label1.textColor = UIColor(named: "YP White")
-        // Установка стиля, размера шрифта, веса шрифта и высоты строки
         let font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 18 / font.pointSize // Рассчитываем множитель для line height
+        paragraphStyle.lineHeightMultiple = 18 / font.pointSize
         let attributes: [NSAttributedString.Key : Any] = [
             .font: font,
             .paragraphStyle: paragraphStyle
@@ -82,7 +81,7 @@ final class ProfileViewController: UIViewController {
         self.label3 = label3
     }
     
-    func setupButton() {
+    private func setupButton() {
         let button = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward")!,
             target: self,
