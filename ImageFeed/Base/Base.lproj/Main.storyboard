@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Wc5-e1-kd6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="mdv-k8-V9z">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -199,6 +200,28 @@
             </objects>
             <point key="canvasLocation" x="-1127" y="770"/>
         </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Pyq-MQ-fD8">
+            <objects>
+                <tabBarController id="Wc5-e1-kd6" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hGG-nd-4sP">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" name="YP White"/>
+                        <tabBarAppearance key="standardAppearance">
+                            <color key="backgroundColor" name="YP Black"/>
+                        </tabBarAppearance>
+                    </tabBar>
+                    <connections>
+                        <segue destination="dPO-iZ-qGb" kind="relationship" relationship="viewControllers" id="MPF-D1-gp2"/>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="qdj-oa-7UK"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MRi-Ts-irg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1127" y="3"/>
+        </scene>
         <!--Auth View Controller-->
         <scene sceneID="e5A-aY-16y">
             <objects>
@@ -222,6 +245,9 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="3mb-dd-yex" kind="presentation" identifier="ShowWebView" modalPresentationStyle="overFullScreen" id="7Av-eP-dhW"/>
+                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="auth_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="VbI-el-CuK">
                                 <rect key="frame" x="166.66666666666666" y="396" width="60" height="60"/>
@@ -248,27 +274,53 @@
             </objects>
             <point key="canvasLocation" x="444" y="-895"/>
         </scene>
-        <!--Tab Bar Controller-->
-        <scene sceneID="Pyq-MQ-fD8">
+        <!--WebView View Controller-->
+        <scene sceneID="yaz-JS-J1C">
             <objects>
-                <tabBarController id="Wc5-e1-kd6" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hGG-nd-4sP">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="selectedImageTintColor" name="YP White"/>
-                        <tabBarAppearance key="standardAppearance">
-                            <color key="backgroundColor" name="YP Black"/>
-                        </tabBarAppearance>
-                    </tabBar>
+                <viewController id="3mb-dd-yex" userLabel="WebView View Controller" customClass="WebViewViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="W9J-Fh-iNW">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dhr-Xa-RgS">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <color key="backgroundColor" name="YP White"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZQr-aN-03v" userLabel="BackwardButton">
+                                <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="48" id="3fI-ez-hQP"/>
+                                    <constraint firstAttribute="height" constant="48" id="gZS-ky-cQc"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="nav_backwards_black_ic"/>
+                                <connections>
+                                    <action selector="didTapBackButton:" destination="3mb-dd-yex" eventType="touchUpInside" id="VTy-bk-Qye"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="QGs-rs-Jxq"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ZQr-aN-03v" firstAttribute="top" secondItem="QGs-rs-Jxq" secondAttribute="top" id="Erj-VG-6Af"/>
+                            <constraint firstAttribute="bottom" secondItem="dhr-Xa-RgS" secondAttribute="bottom" id="cOR-gd-dty"/>
+                            <constraint firstItem="dhr-Xa-RgS" firstAttribute="leading" secondItem="W9J-Fh-iNW" secondAttribute="leading" id="ebX-eL-Bek"/>
+                            <constraint firstAttribute="trailing" secondItem="dhr-Xa-RgS" secondAttribute="trailing" id="s6e-Tg-35t"/>
+                            <constraint firstItem="ZQr-aN-03v" firstAttribute="leading" secondItem="QGs-rs-Jxq" secondAttribute="leading" id="sXk-as-1PJ"/>
+                            <constraint firstItem="dhr-Xa-RgS" firstAttribute="top" secondItem="W9J-Fh-iNW" secondAttribute="top" id="u4q-Ci-mJG"/>
+                        </constraints>
+                    </view>
                     <connections>
-                        <segue destination="dPO-iZ-qGb" kind="relationship" relationship="viewControllers" id="MPF-D1-gp2"/>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="qdj-oa-7UK"/>
+                        <outlet property="webView" destination="dhr-Xa-RgS" id="v5z-Ai-EEM"/>
                     </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MRi-Ts-irg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FVk-bh-IvD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1127" y="3"/>
+            <point key="canvasLocation" x="1339" y="-871"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="57s-1M-7oI">
@@ -300,6 +352,7 @@
         <image name="auth_screen_logo" width="60" height="60"/>
         <image name="backwards_ic" width="24" height="24"/>
         <image name="like_button_on" width="44" height="44"/>
+        <image name="nav_backwards_black_ic" width="24" height="24"/>
         <image name="share_ic" width="50" height="50"/>
         <image name="tab_editorial_active" width="20" height="22"/>
         <image name="tab_profile_active" width="30" height="30"/>
@@ -312,5 +365,8 @@
         <namedColor name="YP White">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

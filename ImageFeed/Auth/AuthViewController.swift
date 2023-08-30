@@ -5,8 +5,8 @@
 //  Created by Almira Khafizova on 30.08.23.
 //
 
-import Foundation
+import UIKit
 
-final class AuthViewController {
-    
+final class AuthViewController: UIViewController {
+    private let showWebViewSegueIdentifier = "ShowWebView"
 }
