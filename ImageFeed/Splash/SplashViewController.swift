@@ -11,13 +11,13 @@ import WebKit
 
 final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-
+    
     private let oauth2Service = OAuth2Service()
     private let oauth2TokenStorage = OAuth2TokenStorage()
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
         if oauth2TokenStorage.token != nil {
             switchToTabBarController()
         } else {
@@ -25,12 +25,12 @@ final class SplashViewController: UIViewController {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
         }
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setNeedsStatusBarAppearanceUpdate()
     }
-
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
@@ -66,18 +66,15 @@ extension SplashViewController: AuthViewControllerDelegate {
             self.fetchAuthToken(code)
         }
     }
-
+    
     private func fetchAuthToken(_ code: String) {
         oauth2Service.fetchAuthToken(code) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case .success:
-                print("result")
                 self.switchToTabBarController()
             case .failure:
-                print("error")
-                print("!failure NO TOKEN")
                 break
             }
         }
