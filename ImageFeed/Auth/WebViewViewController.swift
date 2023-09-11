@@ -98,7 +98,6 @@ extension WebViewViewController: WKNavigationDelegate {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
-            print("11111")
         } else {
             decisionHandler(.allow)
         }
