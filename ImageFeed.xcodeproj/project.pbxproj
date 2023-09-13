@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0118AFA02AAF35A500417417 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 0118AF9F2AAF35A500417417 /* ProgressHUD */; };
+		0118AFA22AB1E77E00417417 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFA12AB1E77E00417417 /* UIBlockingProgressHUD.swift */; };
 		012DEBC72A72F78E0014551E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBC62A72F78E0014551E /* AppDelegate.swift */; };
 		012DEBC92A72F78E0014551E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBC82A72F78E0014551E /* SceneDelegate.swift */; };
 		012DEBCB2A72F78E0014551E /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBCA2A72F78E0014551E /* ImagesListViewController.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0118AFA12AB1E77E00417417 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		012DEBC32A72F78E0014551E /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		012DEBC62A72F78E0014551E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		012DEBC82A72F78E0014551E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				012DEBD72A72F78F0014551E /* Info.plist */,
 				012DEBC82A72F78E0014551E /* SceneDelegate.swift */,
 				012DEBCF2A72F78E0014551E /* ImageFeed.xcdatamodeld */,
+				0118AFA12AB1E77E00417417 /* UIBlockingProgressHUD.swift */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				013CBEF02A9F32E100037D3E /* AuthViewController.swift in Sources */,
 				013CBEF92AA5E2B300037D3E /* OAuth2TokenStorage.swift in Sources */,
 				013CBEED2A9895B900037D3E /* Constants.swift in Sources */,
+				0118AFA22AB1E77E00417417 /* UIBlockingProgressHUD.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
