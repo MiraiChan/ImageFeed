@@ -11,16 +11,16 @@ enum NetworkError: Error {
     case httpStatusCode(Int)
     case urlRequestError(Error)
     case urlSessionError
+    case decodingError
 }
 
 extension URLSession {
-    
     /// Вспомогательный метод для выполнения сетевого запроса
-    func data(
+    func data<T:Decodable>(
         for request: URLRequest,
-        complition: @escaping (Result<Data,Error>) -> Void
+        complition: @escaping (Result<T,Error>) -> Void
     ) -> URLSessionTask {
-        let fulfillCompleteon: (Result<Data,Error>) -> Void = { result in
+        let fulfillCompletion: (Result<T,Error>) -> Void = { result in
             DispatchQueue.main.async {
                 complition(result)
             }
@@ -32,15 +32,21 @@ extension URLSession {
                let statusCode = (response as? HTTPURLResponse)?.statusCode
             {
                 if 200 ..< 300 ~= statusCode {
-                    print(String(data: data, encoding: .utf8)!)
-                    fulfillCompleteon(.success(data))
+                    let jsonDecoder = JSONDecoder()
+                    do {
+                        let decodedModel = try jsonDecoder.decode(T.self, from: data)
+                        fulfillCompletion(.success(decodedModel))
+                    }
+                    catch {
+                        fulfillCompletion(.failure(NetworkError.decodingError))
+                    }
                 } else {
-                    fulfillCompleteon(.failure(NetworkError.httpStatusCode(statusCode)))
+                    fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
             } else if let error = error {
-                fulfillCompleteon(.failure(NetworkError.urlRequestError(error)))
+                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
             } else {
-                fulfillCompleteon(.failure(NetworkError.urlSessionError))
+                fulfillCompletion(.failure(NetworkError.urlSessionError))
             }
         }
         
