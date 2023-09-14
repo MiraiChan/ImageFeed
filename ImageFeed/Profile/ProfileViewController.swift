@@ -9,11 +9,12 @@ import Foundation
 import UIKit
 
 final class ProfileViewController: UIViewController {
-    private var label1: UILabel?
+    private var label1: UILabel!
     private var label2 = UILabel()
     private var label3 = UILabel()
     private let imageView = UIImageView()
     
+    private let profileService = ProfileService.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +22,20 @@ final class ProfileViewController: UIViewController {
         setupLabel()
         setupButton()
         
+        updateProfileDetails(profile: profileService.profile)
+        
+    }
+    
+    private func updateProfileDetails(profile: Profile?) {
+        if let profile = profile {
+            label1.text = profile.name
+            label2.text = profile.loginName
+            label3.text = profile.bio
+        } else {
+            label1.text = "Error"
+            label2.text = "Error"
+            label3.text = "Error"
+        }
     }
     
     private func setupImageView() {
