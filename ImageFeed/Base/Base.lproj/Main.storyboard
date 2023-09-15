@@ -225,7 +225,7 @@
         <!--Auth View Controller-->
         <scene sceneID="e5A-aY-16y">
             <objects>
-                <viewController id="lJm-Vy-EjX" userLabel="Auth View Controller" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AuthViewController" id="lJm-Vy-EjX" userLabel="Auth View Controller" customClass="AuthViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Hw0-UF-fUh">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
