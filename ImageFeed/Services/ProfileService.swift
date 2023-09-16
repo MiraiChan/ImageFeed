@@ -67,3 +67,9 @@ struct Profile: Codable {
     var loginName: String
     var bio: String?
 }
+
+enum ProfileServiceError: Error {
+    case invalidURL
+    case invalidData
+    case decodingFailed
+}
