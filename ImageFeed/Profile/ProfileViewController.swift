@@ -15,6 +15,8 @@ final class ProfileViewController: UIViewController {
     private let imageView = UIImageView()
     
     private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,23 @@ final class ProfileViewController: UIViewController {
             label2.text = "Error"
             label3.text = "Error"
         }
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main,
+            using: { [weak self] _ in
+                guard let self else { return }
+                self.updateAvatar()
+            }
+        )
+        
+        updateAvatar()
+    }
+    
+    private func updateAvatar() {
+        guard let profileImageURL = profileImageService.avatarURL,
+            let imageURL = URL(string: profileImageURL)
+        else { return }
     }
     
     private func setupImageView() {
