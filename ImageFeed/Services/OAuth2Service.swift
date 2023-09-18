@@ -10,10 +10,14 @@ import UIKit
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
-    private let urlSession = URLSession.shared //Объявляем и инициализируем переменную URLSession.
+    private init() { }
     
-    private var task: URLSessionTask?//Переменная для хранения указателя на последнюю созданную задачу. Если активных задач нет, то значение будет nil.
-    private var lastCode: String?//Переменная для хранения значения code, которое было передано в последнем созданном запросе.
+    private let urlSession = URLSession.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage()
+    
+    private var task: URLSessionTask?
+    private var lastCode: String?
+    
     private (set) var authToken: String? {
         get {
             return OAuth2TokenStorage().token
@@ -30,14 +34,14 @@ final class OAuth2Service {
         lastCode = code
         
         let request = authTokenRequest(code: code)
-        let task = object(for: request) { [weak self] result in
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 switch result {
                 case .success(let body):
                     let authToken = body.accessToken
                     self.authToken = authToken
-                    completion(.success(authToken))
+                    completion(.success(body.accessToken))
                     self.task = nil
                     
                 case .failure(let error):
@@ -52,20 +56,6 @@ final class OAuth2Service {
 }
 
 private extension OAuth2Service {
-    func object(
-        for request: URLRequest,
-        completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
-    ) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
-                Result {
-                    try decoder.decode(OAuthTokenResponseBody.self, from: data)
-                }
-            }
-            completion(response)
-        }
-    }
     
     // Вспомогательная функция для получения своего профиля
     var selfProfileRequest: URLRequest {

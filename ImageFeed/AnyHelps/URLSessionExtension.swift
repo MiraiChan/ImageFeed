@@ -4,7 +4,6 @@
 //
 //  Created by Almira Khafizova on 05.09.23.
 //
-
 import Foundation
 
 enum NetworkError: Error {
@@ -16,30 +15,24 @@ enum NetworkError: Error {
 
 extension URLSession {
     /// Вспомогательный метод для выполнения сетевого запроса
-    func data<T:Decodable>(
+    func data (
         for request: URLRequest,
-        complition: @escaping (Result<T,Error>) -> Void
+        complition: @escaping (Result<Data,Error>) -> Void
     ) -> URLSessionTask {
-        let fulfillCompletion: (Result<T,Error>) -> Void = { result in
+        let fulfillCompletion: (Result<Data,Error>) -> Void = { result in
             DispatchQueue.main.async {
                 complition(result)
             }
         }
         
-        let task = dataTask(with: request) { data, response, error in
+        let task = dataTask(with: request, completionHandler: { data, response, error in
             if let data = data,
                let response = response,
                let statusCode = (response as? HTTPURLResponse)?.statusCode
             {
                 if 200 ..< 300 ~= statusCode {
-                    let jsonDecoder = JSONDecoder()
-                    do {
-                        let decodedModel = try jsonDecoder.decode(T.self, from: data)
-                        fulfillCompletion(.success(decodedModel))
-                    }
-                    catch {
-                        fulfillCompletion(.failure(NetworkError.decodingError))
-                    }
+                    
+                    fulfillCompletion(.success(data))
                 } else {
                     fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
@@ -48,10 +41,26 @@ extension URLSession {
             } else {
                 fulfillCompletion(.failure(NetworkError.urlSessionError))
             }
-        }
-        
+        })
         task.resume()
         return task
     }
+    
+    func objectTask<T:Decodable>(for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionTask {
+        
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        
+        return data(for: request) { (result: Result<Data, Error>) in
+            let response = result.flatMap { data -> Result<T, Error> in
+                do {
+                    let decodedModel = try decoder.decode(T.self, from: data)
+                    return .success(decodedModel)
+                } catch {
+                    return .failure(NetworkError.decodingError)
+                }
+            }
+            completion(response)
+        }
+    }
 }
-

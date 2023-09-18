@@ -31,7 +31,7 @@ final class ProfileImageService {
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
-        let dataTask = urlSession.data(for: request) { [weak self] (result: Result<UserResult, Error>) in
+        let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
             switch result {
             case .success(let userResult):
                 self?.avatarURL = userResult.profileImage.small
