@@ -5,21 +5,24 @@
 //  Created by Almira Khafizova on 15.08.23.
 //
 
-import Foundation
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     private var label1: UILabel!
     private var label2 = UILabel()
     private var label3 = UILabel()
     private let imageView = UIImageView()
+    private var logoutButton: UIButton!
     
+    private let oauth2TokenStorage = OAuth2TokenStorage()
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupImageView()
         setupLabel()
         setupButton()
@@ -55,6 +58,15 @@ final class ProfileViewController: UIViewController {
         guard let profileImageURL = profileImageService.avatarURL,
             let imageURL = URL(string: profileImageURL)
         else { return }
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: imageURL,
+                                     placeholder: UIImage(named: "user_picture"),
+                                     options: [.processor(processor)])
     }
     
     private func setupImageView() {
@@ -116,29 +128,23 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupButton() {
-        let button = UIButton.systemButton(
+        let logoutButton = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward")!,
             target: self,
             action: #selector(Self.didTapButton)
         )
-        button.tintColor = .red
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        button.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        logoutButton.tintColor = .red
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoutButton)
+        logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
     
     @objc
     private func didTapButton() {
-        // Решение 1
-        label1?.removeFromSuperview()
-        label1 = nil
-        
-        // Решение 2
-        for view in view.subviews {
-            if view is UILabel {
-                view.removeFromSuperview()
-            }
-        }
+        imageView.image = UIImage(named: "user_picture")
+        label1.text = "User's name"
+        oauth2TokenStorage.token = nil
+        logoutButton.isEnabled = false
     }
 }

@@ -35,7 +35,7 @@ final class ProfileImageService {
             switch result {
             case .success(let userResult):
                 self?.avatarURL = userResult.profileImage.small
-                if let avatarURL = self?.avatarURL {
+                if (self?.avatarURL) != nil {
                     completion(.success(userResult.profileImage.small))
                     NotificationCenter.default.post(name: ProfileImageService.didChangeNotification,
                                                       object: self,
