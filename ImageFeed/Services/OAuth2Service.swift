@@ -10,7 +10,6 @@ import UIKit
 
 final class OAuth2Service {
     static let shared = OAuth2Service()
-    private init() { }
     
     private let urlSession = URLSession.shared
     private let oauth2TokenStorage = OAuth2TokenStorage()
@@ -29,12 +28,12 @@ final class OAuth2Service {
     
     func fetchAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
-        if lastCode != code { return }
+        if lastCode == code { return }
         task?.cancel()
         lastCode = code
         
         let request = authTokenRequest(code: code)
-        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+        let task = object(for: request) { [weak self] result in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 switch result {
@@ -56,6 +55,16 @@ final class OAuth2Service {
 }
 
 private extension OAuth2Service {
+    
+    func object( for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
+        let decoder = JSONDecoder()
+        return urlSession.data(for: request) { (result: Result<Data, Error>) in
+            let response = result.flatMap {data -> Result<OAuthTokenResponseBody, Error> in
+                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
+            }
+            completion(response)
+        }
+    }
     
     // Вспомогательная функция для получения своего профиля
     var selfProfileRequest: URLRequest {

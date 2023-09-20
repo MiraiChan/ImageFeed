@@ -44,6 +44,11 @@ final class WebViewViewController: UIViewController {
     
     // MARK: - Private methods
     
+    private func updateProgress() {
+        progressView.progress = Float(webView.estimatedProgress)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+    
     private func webViewLoading () {
         
         //Url
@@ -72,11 +77,6 @@ final class WebViewViewController: UIViewController {
             self.updateProgress()
         })
     }
-    
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
-    }
 }
 // MARK: - WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
@@ -87,7 +87,6 @@ extension WebViewViewController: WKNavigationDelegate {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
-            print("11111")
         } else {
             decisionHandler(.allow)
         }

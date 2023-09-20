@@ -13,6 +13,7 @@
 		0118AFAB2AB653FD00417417 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFAA2AB653FD00417417 /* ProfileImageService.swift */; };
 		0118AFAE2ABA321000417417 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 0118AFAD2ABA321000417417 /* Kingfisher */; };
 		0118AFB12ABA4C4300417417 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 0118AFB02ABA4C4300417417 /* SwiftKeychainWrapper */; };
+		0118AFB32ABB4D0F00417417 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFB22ABB4D0F00417417 /* TabBarController.swift */; };
 		012DEBC72A72F78E0014551E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBC62A72F78E0014551E /* AppDelegate.swift */; };
 		012DEBC92A72F78E0014551E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBC82A72F78E0014551E /* SceneDelegate.swift */; };
 		012DEBCB2A72F78E0014551E /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBCA2A72F78E0014551E /* ImagesListViewController.swift */; };
@@ -58,6 +59,7 @@
 		0118AFA12AB1E77E00417417 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		0118AFA62AB3249A00417417 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		0118AFAA2AB653FD00417417 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
+		0118AFB22ABB4D0F00417417 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		012DEBC32A72F78E0014551E /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		012DEBC62A72F78E0014551E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		012DEBC82A72F78E0014551E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 				012DEBC82A72F78E0014551E /* SceneDelegate.swift */,
 				012DEBCF2A72F78E0014551E /* ImageFeed.xcdatamodeld */,
 				0118AFA12AB1E77E00417417 /* UIBlockingProgressHUD.swift */,
+				0118AFB22ABB4D0F00417417 /* TabBarController.swift */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				01FBCAAA2A7CF7F300F9A80C /* ImagesListCell.swift in Sources */,
 				0118AFAB2AB653FD00417417 /* ProfileImageService.swift in Sources */,
 				0118AFA72AB3249A00417417 /* ProfileService.swift in Sources */,
+				0118AFB32ABB4D0F00417417 /* TabBarController.swift in Sources */,
 				012DEBC72A72F78E0014551E /* AppDelegate.swift in Sources */,
 				012DEBC92A72F78E0014551E /* SceneDelegate.swift in Sources */,
 				013CBEF02A9F32E100037D3E /* AuthViewController.swift in Sources */,
