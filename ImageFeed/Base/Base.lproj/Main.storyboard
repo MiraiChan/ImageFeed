@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QzD-g6-RAt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -98,7 +98,7 @@
                             <constraint firstAttribute="trailing" secondItem="1Mo-Lj-4cO" secondAttribute="trailing" id="nua-3p-vRr"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="IoO-6M-Hd2"/>
+                    <tabBarItem key="tabBarItem" title="" image="tab_editorial_active" id="IoO-6M-Hd2"/>
                     <navigationItem key="navigationItem" id="alb-aR-pxF"/>
                     <connections>
                         <outlet property="tableView" destination="1Mo-Lj-4cO" id="elZ-wD-CVA"/>
@@ -211,7 +211,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EKM-gZ-E6t" userLabel="Войти">
-                                <rect key="frame" x="16" y="714" width="361" height="48"/>
+                                <rect key="frame" x="16" y="680" width="361" height="48"/>
                                 <color key="backgroundColor" name="YP White"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="Sx3-gm-0ry"/>
@@ -313,44 +313,13 @@
             </objects>
             <point key="canvasLocation" x="1338.1679389312976" y="-871.12676056338034"/>
         </scene>
-        <!--Splash View Controller-->
-        <scene sceneID="JRI-xj-r8z">
-            <objects>
-                <viewController id="QzD-g6-RAt" customClass="SplashViewController" customModule="ImageFeed" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="9Ki-2t-XBk">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Launchscreen_logo_Vector" translatesAutoresizingMaskIntoConstraints="NO" id="9oH-4L-OIF" userLabel="splash_screen_logo">
-                                <rect key="frame" x="159" y="400" width="75" height="77"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="75" id="OBc-Xf-YHA"/>
-                                    <constraint firstAttribute="height" constant="77" id="ffH-sr-occ"/>
-                                </constraints>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="hCi-Qs-Pew"/>
-                        <color key="backgroundColor" name="YP Black"/>
-                        <constraints>
-                            <constraint firstItem="9oH-4L-OIF" firstAttribute="centerY" secondItem="hCi-Qs-Pew" secondAttribute="centerY" id="P6q-1o-6xX"/>
-                            <constraint firstItem="9oH-4L-OIF" firstAttribute="centerX" secondItem="hCi-Qs-Pew" secondAttribute="centerX" id="WPa-7D-Vb9"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <segue destination="mdv-k8-V9z" kind="presentation" identifier="ShowAuthenticationScreen" modalPresentationStyle="fullScreen" id="9WB-nP-9MG"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jf8-MZ-1yN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1532" y="-895"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="57s-1M-7oI">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mdv-k8-V9z" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="QUP-vY-GWN">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" name="YP White"/>
                         <color key="barTintColor" name="YP White"/>
@@ -370,12 +339,12 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
-        <image name="Launchscreen_logo_Vector" width="75" height="78"/>
         <image name="auth_screen_logo" width="60" height="60"/>
         <image name="backwards_white_ic" width="24" height="24"/>
         <image name="like_button_on" width="44" height="44"/>
         <image name="nav_backwards_black_ic" width="24" height="24"/>
         <image name="share_ic" width="50" height="50"/>
+        <image name="tab_editorial_active" width="20" height="22"/>
         <namedColor name="YP Background">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
