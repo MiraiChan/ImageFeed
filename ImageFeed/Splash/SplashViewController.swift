@@ -23,11 +23,10 @@ final class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if let token = oauth2TokenStorage.token {
-            self.fetchProfile(token: token)
+           fetchProfile(token: token)
         } else {
             switchToAuthViewController()
         }
-        showAlert()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,7 +69,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else { return }
             switch result {
             case .success(let token):
-                self.fetchProfile(token: token)
+                fetchProfile(token: token)
             case .failure:
                 showAlert()
                 break
@@ -89,6 +88,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                     UIBlockingProgressHUD.dismiss()
                     self.switchToTabBarController()
                 case .failure:
+                    print("fetchProfile")
                     self.showAlert()
                     break
                 }

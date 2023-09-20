@@ -20,6 +20,7 @@ extension URLSession {
         complition: @escaping (Result<Data,Error>) -> Void
     ) -> URLSessionTask {
         let fulfillCompletion: (Result<Data,Error>) -> Void = { result in
+            print(result)
             DispatchQueue.main.async {
                 complition(result)
             }
@@ -47,20 +48,31 @@ extension URLSession {
     }
     
     func objectTask<T:Decodable>(for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionTask {
-        
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        
-        return data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap { data -> Result<T, Error> in
-                do {
-                    let decodedModel = try decoder.decode(T.self, from: data)
-                    return .success(decodedModel)
-                } catch {
-                    return .failure(NetworkError.decodingError)
-                }
+        let fulfillCompletion: (Result<T, Error>) -> Void = { result in
+            DispatchQueue.main.async {
+                 completion(result)
             }
-            completion(response)
+        }
+        let task = dataTask(with: request) { data, response, error in
+            if let data = data, let response = response as? HTTPURLResponse {
+                if 200..<300 ~= response.statusCode {
+        let decoder = JSONDecoder()
+                    do {
+                        let decodedModel = try decoder.decode(T.self, from: data)
+                        fulfillCompletion(.success(decodedModel))
+                    } catch {
+                        fulfillCompletion(.failure(NetworkError.decodingError))
+                    }
+            } else {
+                fulfillCompletion(.failure(NetworkError.httpStatusCode(response.statusCode)))
+            }
+        } else if let error {
+            fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
+        } else {
+            fulfillCompletion(.failure(NetworkError.urlSessionError))
         }
     }
+    task.resume()
+    return task
+}
 }
