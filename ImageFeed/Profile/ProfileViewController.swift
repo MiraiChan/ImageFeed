@@ -56,17 +56,17 @@ final class ProfileViewController: UIViewController {
     
     private func updateAvatar() {
         guard let profileImageURL = profileImageService.avatarURL,
-            let imageURL = URL(string: profileImageURL)
+              let imageURL = URL(string: profileImageURL)
         else { return }
         let cache = ImageCache.default
         cache.clearMemoryCache()
         cache.clearDiskCache()
-
+        
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
         imageView.kf.indicatorType = .activity
         imageView.kf.setImage(with: imageURL,
-                                     placeholder: UIImage(named: "user_picture"),
-                                     options: [.processor(processor)])
+                              placeholder: UIImage(named: "user_picture"),
+                              options: [.processor(processor)])
     }
     
     private func setupImageView() {
@@ -133,7 +133,7 @@ final class ProfileViewController: UIViewController {
             target: self,
             action: #selector(Self.didTapButton)
         )
-        logoutButton.tintColor = .red
+        logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true

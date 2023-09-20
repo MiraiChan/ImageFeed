@@ -19,11 +19,13 @@ final class SplashViewController: UIViewController {
     private let profileImageService = ProfileImageService.shared
     private var authViewController: AuthViewController?
     
+    private var splashScreenImageView: UIImageView!
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if let token = oauth2TokenStorage.token {
-           fetchProfile(token: token)
+            fetchProfile(token: token)
         } else {
             switchToAuthViewController()
         }
@@ -32,6 +34,8 @@ final class SplashViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         setNeedsStatusBarAppearanceUpdate()
+        
+        splashScreenUISetup()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -52,6 +56,23 @@ final class SplashViewController: UIViewController {
         authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true)
+    }
+    
+    private func splashScreenUISetup() {
+        view.backgroundColor = .ypBlack
+        
+        let splashScreenImage = UIImage(named: "splash_screen_logo")
+        let splashScreenImageView = UIImageView(image: splashScreenImage)
+        splashScreenImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(splashScreenImageView)
+        
+        NSLayoutConstraint.activate([
+            splashScreenImageView.heightAnchor.constraint(equalToConstant: 78),
+            splashScreenImageView.widthAnchor.constraint(equalToConstant: 75),
+            splashScreenImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            splashScreenImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)])
+        
+        self.splashScreenImageView = splashScreenImageView
     }
 }
 
