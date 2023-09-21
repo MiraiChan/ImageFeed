@@ -26,6 +26,7 @@ final class ProfileViewController: UIViewController {
         setupImageView()
         setupLabel()
         setupButton()
+        view.backgroundColor = .ypBlack
         
         updateProfileDetails(profile: profileService.profile)
         
