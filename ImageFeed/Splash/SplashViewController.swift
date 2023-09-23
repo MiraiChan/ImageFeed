@@ -21,18 +21,18 @@ final class SplashViewController: UIViewController {
         .lightContent
     }
     
+    override func viewDidLoad() {
+      super.viewDidLoad()
+      alertPresenter = AlertPresenter(viewController: self)
+      splashScreenUISetup()
+      UIBlockingProgressHUD.setup()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        alertPresenter = AlertPresenter(viewController: self)
-        splashScreenUISetup()
-        UIBlockingProgressHUD.setup()
+    super.viewDidAppear(true)
+    authStatusChecker()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        authStatusChecker()
-    }
-}
+  }
 
 private extension SplashViewController {
     func authStatusChecker () {
@@ -40,7 +40,6 @@ private extension SplashViewController {
         wasChecked = true
         if oauth2Service.isAuthenticated {
             UIBlockingProgressHUD.show()
-            
             fetchProfile {
                 [weak self] in UIBlockingProgressHUD.dismiss()
                 self?.switchToTabBarController()
@@ -62,7 +61,7 @@ private extension SplashViewController {
                         assertionFailure("Cannot remove token")
                         return
                     }
-                    self.authStatusChecker()
+                // self.authStatusChecker()
                 }
             self.alertPresenter?.showAlert(for: alertModel)
         }
@@ -108,6 +107,7 @@ private extension SplashViewController {
         UIBlockingProgressHUD.show()
         
         oauth2Service.fetchAuthToken(code) { [weak self] result in
+            print(11)
             guard let self else { preconditionFailure("Cannot fetch auth token") }
             switch result {
             case .success(_):
@@ -155,7 +155,7 @@ private extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        dismiss(animated: true) {
+        vc.dismiss(animated: true) {
             [weak self] in
             guard let self else { return }
             self.fetchAuthToken(code)

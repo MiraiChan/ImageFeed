@@ -42,7 +42,7 @@ final class ProfileViewController: UIViewController {
     private func didTapButton() {
         imageView.image = UIImage(named: "user_picture")
         label1.text = "User's name"
-        oauth2TokenStorage.token = nil
+        resetToken()
         logoutButton.isEnabled = false
         
         switchToSplashViewController()
@@ -180,4 +180,15 @@ final class ProfileViewController: UIViewController {
         window.rootViewController = splashViewController
     }
     
+}
+
+private extension ProfileViewController {
+    
+    func resetToken() {
+        
+        guard oauth2TokenStorage.removeToken() else {
+            assertionFailure("Cannot remove token")
+            return
+        }
+    }
 }

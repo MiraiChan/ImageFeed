@@ -35,12 +35,12 @@ final class OAuth2Service {
 }
 
 private extension OAuth2Service {
-  struct OAuthTokenResponseBody: Decodable {
-    let accessToken: String
-    let tokenType: String
-    let scope: String
-    let createdAt: Int
-  }
+    struct OAuthTokenResponseBody: Decodable {
+        let accessToken: String
+        let tokenType: String
+        let scope: String
+        let createdAt: Int
+    }
 }
 
 private extension OAuth2Service {
@@ -98,8 +98,8 @@ private extension OAuth2Service {
     }
 }
 
-    
-extension OAuth2Service{
+
+extension OAuth2Service {
     func fetchAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard code != lastCode else { return }
@@ -116,19 +116,18 @@ extension OAuth2Service{
             [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
             guard let self else { preconditionFailure("Cannot make weak link") }
             self.task = nil
-                switch result {
-                case .success(let body):
-                    let authToken = body.accessToken
-                    self.oauth2TokenStorage.token = authToken
-                    completion(.success(authToken))
-                    
-                case .failure(let error):
-                    completion(.failure(error))
-                    self.lastCode = nil
-                    completion(.failure(error))
-                }
+            switch result {
+            case .success(let body):
+                let authToken = body.accessToken
+                self.oauth2TokenStorage.token = authToken
+                completion(.success(authToken))
+                
+            case .failure(let error):
+                self.lastCode = nil
+                completion(.failure(error))
             }
         }
     }
-    
-   
+}
+
+
