@@ -22,4 +22,9 @@ final class UIBlockingProgressHUD {
         window?.isUserInteractionEnabled = true
         ProgressHUD.dismiss()
     }
+    
+    static func setup() {
+      ProgressHUD.animationType = .circleRotateChase
+      ProgressHUD.colorHUD = .clear
+    }
 }

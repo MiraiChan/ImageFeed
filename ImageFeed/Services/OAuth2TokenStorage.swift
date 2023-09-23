@@ -9,6 +9,7 @@ import Foundation
 import SwiftKeychainWrapper
 
 final class OAuth2TokenStorage {
+    static let shared = OAuth2TokenStorage()
     private let keyChainStorage = KeychainWrapper.standard
     
     var token: String? {
@@ -18,10 +19,15 @@ final class OAuth2TokenStorage {
         set {
             if let token = newValue {
                 keyChainStorage.set(token, forKey: .tokenKey)
-            } else {
-                keyChainStorage.removeObject(forKey: .tokenKey)
-            }
+            } else { return }
         }
+    }
+}
+
+extension OAuth2TokenStorage {
+    
+    func removeToken() -> Bool {
+        keyChainStorage.removeObject(forKey: .tokenKey)
     }
 }
 

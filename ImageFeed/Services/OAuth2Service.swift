@@ -9,79 +9,58 @@ import Foundation
 import UIKit
 
 final class OAuth2Service {
-    static let shared = OAuth2Service()
     
-    private let urlSession = URLSession.shared
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private var urlSession = URLSession.shared
+    private var oauth2TokenStorage = OAuth2TokenStorage.shared
+    private let requestBuilder: URLRequestBuilder
     
     private var task: URLSessionTask?
     private var lastCode: String?
     
-    private (set) var authToken: String? {
-        get {
-            return OAuth2TokenStorage().token
-        }
-        set {
-            OAuth2TokenStorage().token = newValue
-        }
+    static let shared = OAuth2Service()
+    
+    private init(
+        urlSession: URLSession = .shared,
+        oauth2TokenStorage: OAuth2TokenStorage = .shared,
+        requestBuilder: URLRequestBuilder = .shared
+    ) {
+        self.urlSession = urlSession
+        self.oauth2TokenStorage = oauth2TokenStorage
+        self.requestBuilder = requestBuilder
     }
     
-    func fetchAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
-        assert(Thread.isMainThread)
-        if lastCode == code { return }
-        task?.cancel()
-        lastCode = code
-        
-        let request = authTokenRequest(code: code)
-        let task = object(for: request) { [weak self] result in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
-                switch result {
-                case .success(let body):
-                    let authToken = body.accessToken
-                    self.authToken = authToken
-                    completion(.success(body.accessToken))
-                    self.task = nil
-                    
-                case .failure(let error):
-                    completion(.failure(error))
-                    self.lastCode = nil
-                }
-            }
-        }
-        self.task = task
-        task.resume()
+    var isAuthenticated: Bool {
+        oauth2TokenStorage.token != nil
     }
 }
 
 private extension OAuth2Service {
-    
-    func object( for request: URLRequest, completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
-        let decoder = JSONDecoder()
-        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-            let response = result.flatMap {data -> Result<OAuthTokenResponseBody, Error> in
-                Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
-            }
-            completion(response)
-        }
-    }
+  struct OAuthTokenResponseBody: Decodable {
+    let accessToken: String
+    let tokenType: String
+    let scope: String
+    let createdAt: Int
+  }
+}
+
+private extension OAuth2Service {
     
     // Вспомогательная функция для получения своего профиля
-    var selfProfileRequest: URLRequest {
-        URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
+    var selfProfileRequest: URLRequest? {
+        requestBuilder.makeHTTPRequest(path: "/me", httpMethod: "GET")
     }
     
     /// Вспомогательная функция для получения картинки профиля
-    func profileImageURLRequest(userName: String) -> URLRequest {
-        URLRequest.makeHTTPRequest(
+    func profileImageURLRequest(userName: String) -> URLRequest? {
+        requestBuilder.makeHTTPRequest(
             path: "/users/\(userName)",
             httpMethod: "GET"
         )
     }
     
     /// Вспомогательная функция для получения картинок
-    func photosRequest(page: Int, perPage: Int) -> URLRequest {
-        URLRequest.makeHTTPRequest(
+    func photosRequest(page: Int, perPage: Int) -> URLRequest? {
+        requestBuilder.makeHTTPRequest(
             path: "/photos"
             + "?page=\(page)"
             + "&&per_page=\(perPage)",
@@ -90,23 +69,23 @@ private extension OAuth2Service {
     }
     
     /// Вспомогательная функция для получения лайкнутых картинок
-    func likeRequest(photoId: String) -> URLRequest {
-        URLRequest.makeHTTPRequest(
+    func likeRequest(photoId: String) -> URLRequest? {
+        requestBuilder.makeHTTPRequest(
             path: "/photos/\(photoId)/like",
             httpMethod: "POST"
         )
     }
     
     /// Вспомогательная функция для получения не лайкнутых картинок
-    func unlikeRequest(photoId: String) -> URLRequest {
-        URLRequest.makeHTTPRequest(
+    func unlikeRequest(photoId: String) -> URLRequest? {
+        requestBuilder.makeHTTPRequest(
             path: "/photos/\(photoId)/like",
             httpMethod: "DELETE"
         )
     }
     
-    func authTokenRequest(code: String) -> URLRequest {//Функция для создания URLRequest с заданным code.
-        URLRequest.makeHTTPRequest(
+    func authTokenRequest(code: String) -> URLRequest? {//Функция для создания URLRequest с заданным code.
+        return requestBuilder.makeHTTPRequest(
             path: "/oauth/token"
             + "?client_id=\(AccessKey)"
             + "&&client_secret=\(SecretKey)"
@@ -114,8 +93,42 @@ private extension OAuth2Service {
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
-            baseURL: URL(string: "https://unsplash.com")!
+            baseURLString: "https://unsplash.com"
         )
     }
 }
 
+    
+extension OAuth2Service{
+    func fetchAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        guard code != lastCode else { return }
+        task?.cancel()
+        lastCode = code
+        
+        guard let request = authTokenRequest(code: code) else {
+            assertionFailure("Invalid request")
+            completion(.failure(ProfileError.invalidRequest))
+            return
+        }
+        
+        task = urlSession.objectTask (for: request) {
+            [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
+            guard let self else { preconditionFailure("Cannot make weak link") }
+            self.task = nil
+                switch result {
+                case .success(let body):
+                    let authToken = body.accessToken
+                    self.oauth2TokenStorage.token = authToken
+                    completion(.success(authToken))
+                    
+                case .failure(let error):
+                    completion(.failure(error))
+                    self.lastCode = nil
+                    completion(.failure(error))
+                }
+            }
+        }
+    }
+    
+   

@@ -5,51 +5,59 @@
 //  Created by Almira Khafizova on 17.09.23.
 //
 
+import Foundation
 import UIKit
 
 final class ProfileImageService {
     
     // MARK: - Properties
     static let shared = ProfileImageService()
-    private let tokenStorage = OAuth2TokenStorage()
-    private (set) var avatarURL: String?
-    private let urlSession = URLSession.shared
-    private var task: URLSessionTask?
     static let didChangeNotification = Notification.Name("ProfileImageProviderDidChange")
     
+    private let urlSession = URLSession.shared
+    private let requestBuilder = URLRequestBuilder.shared
+    
+    private var task: URLSessionTask?
+    private (set) var avatarURL: URL?
+    
     private init() {}
+}
+
+private extension ProfileImageService {
+
+  func makeRequest(userName: String) -> URLRequest? {
+    requestBuilder.makeHTTPRequest(path: "/users/\(userName)")
+  }
+}
+extension ProfileImageService {
     
-    // MARK: - Functions
-    
-    func fetchProfileImageURL(username: String, _ completion: @escaping (Result<String, Error>) -> Void) {
-        guard let token = tokenStorage.token else {return}
+    func fetchProfileImageURL(userName: String, completion: @escaping (Result<String, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        task?.cancel()
         
-        let urlString = "https://api.unsplash.com/users/\(username)"
-        guard let url = URL(string: urlString) else { return}
+        guard let request = makeRequest(userName: userName) else {
+            assertionFailure("Invalid request")
+            completion(.failure(ProfileServiceError.invalidRequest))
+            return
+          }
         
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        let dataTask = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
+        let dataTask = urlSession.objectTask(for: request) {
+            [weak self] (result: Result<UserResult, Error>) in
             switch result {
             case .success(let userResult):
-                self?.avatarURL = userResult.profileImage.small
-                if (self?.avatarURL) != nil {
-                    completion(.success(userResult.profileImage.small))
+                let mediumPhoto = userResult.profileImage.medium 
+                self?.avatarURL = URL(string: mediumPhoto)
+                    completion(.success(mediumPhoto))
                     NotificationCenter.default.post(name: ProfileImageService.didChangeNotification,
                                                     object: self,
-                                                    userInfo:  ["URL": userResult.profileImage.small])
-                } else {
-                    completion(.failure(ProfileServiceError.invalidData))
-                }
-                self?.task = nil
+                                                    userInfo:  ["URL": userResult.profileImage.medium])
             case .failure(_):
-                completion(.failure(ProfileServiceError.decodingFailed))
+                completion(.failure(ProfileServiceError.invalidData))
             }
+            self?.task = nil
         }
-        task = dataTask
-        task?.resume()
+        self.task = dataTask
+        dataTask.resume()
     }
 }
 
@@ -62,6 +70,8 @@ struct UserResult: Codable {
     
     struct ProfileImage: Codable {
         let small: String
+        let medium: String
+        let large: String
     }
 }
 

@@ -15,7 +15,7 @@ final class ProfileViewController: UIViewController {
     private let imageView = UIImageView()
     private var logoutButton: UIButton!
     
-    private let oauth2TokenStorage = OAuth2TokenStorage()
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private var profileImageServiceObserver: NSObjectProtocol?
@@ -27,13 +27,71 @@ final class ProfileViewController: UIViewController {
         setupLabel()
         setupButton()
         view.backgroundColor = .ypBlack
+        checkAvatar()
         
         updateProfileDetails(profile: profileService.profile)
         
     }
     
-    private func updateProfileDetails(profile: Profile?) {
-        if let profile = profile {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadProfile()
+    }
+    
+    @objc
+    private func didTapButton() {
+        imageView.image = UIImage(named: "user_picture")
+        label1.text = "User's name"
+        oauth2TokenStorage.token = nil
+        logoutButton.isEnabled = false
+        
+        switchToSplashViewController()
+    }
+
+    
+    @objc func updateAvatar(notification: Notification) {
+        guard
+            isViewLoaded,
+            let userInfo = notification.userInfo,
+            let profileImageURL = userInfo[Notification.userInfoImageURLKey] as? String,
+            let url = URL(string: profileImageURL)
+        else { return }
+        updateAvatar(url: url)
+    }
+    
+    func checkAvatar() {
+      if let url = profileImageService.avatarURL{
+        updateAvatar(url: url)
+      }
+    }
+
+    
+    func updateAvatar(url: URL) {
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: url,
+                              placeholder: UIImage(named: "user_picture"),
+                              options: [.processor(processor)])
+    }
+    
+    func updateProfileDetails(profile: Profile?) {
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main,
+            using: { [weak self] notification in
+                guard let self else { return }
+                self.updateAvatar(notification: notification)
+            }
+        )
+    }
+    
+    func loadProfile() {
+        if let profile = profileService.profile {
             label1.text = profile.name
             label2.text = profile.loginName
             label3.text = profile.bio
@@ -42,32 +100,6 @@ final class ProfileViewController: UIViewController {
             label2.text = "Error"
             label3.text = "Error"
         }
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.didChangeNotification,
-            object: nil,
-            queue: .main,
-            using: { [weak self] _ in
-                guard let self else { return }
-                self.updateAvatar()
-            }
-        )
-        
-        updateAvatar()
-    }
-    
-    private func updateAvatar() {
-        guard let profileImageURL = profileImageService.avatarURL,
-              let imageURL = URL(string: profileImageURL)
-        else { return }
-        let cache = ImageCache.default
-        cache.clearMemoryCache()
-        cache.clearDiskCache()
-        
-        let processor = RoundCornerImageProcessor(cornerRadius: 61)
-        imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: imageURL,
-                              placeholder: UIImage(named: "user_picture"),
-                              options: [.processor(processor)])
     }
     
     private func setupImageView() {
@@ -140,12 +172,12 @@ final class ProfileViewController: UIViewController {
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
-    
-    @objc
-    private func didTapButton() {
-        imageView.image = UIImage(named: "user_picture")
-        label1.text = "User's name"
-        oauth2TokenStorage.token = nil
-        logoutButton.isEnabled = false
+        
+    func switchToSplashViewController() {
+        
+        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
+        let splashViewController = SplashViewController()
+        window.rootViewController = splashViewController
     }
+    
 }

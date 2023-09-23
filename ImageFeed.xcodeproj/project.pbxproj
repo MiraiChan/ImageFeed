@@ -15,6 +15,10 @@
 		0118AFB12ABA4C4300417417 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = 0118AFB02ABA4C4300417417 /* SwiftKeychainWrapper */; };
 		0118AFB32ABB4D0F00417417 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFB22ABB4D0F00417417 /* TabBarController.swift */; };
 		0118AFB72ABBA5B100417417 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFB62ABBA5B000417417 /* UIColorExtension.swift */; };
+		0118AFBA2ABDE3B500417417 /* AlertPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFB92ABDE3B500417417 /* AlertPresenter.swift */; };
+		0118AFBC2ABDE41400417417 /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFBB2ABDE41400417417 /* AlertModel.swift */; };
+		0118AFBE2ABEC28500417417 /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFBD2ABEC28500417417 /* NotificationExtensions.swift */; };
+		0118AFC02ABEE2B800417417 /* RootNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0118AFBF2ABEE2B800417417 /* RootNavigationController.swift */; };
 		012DEBC72A72F78E0014551E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBC62A72F78E0014551E /* AppDelegate.swift */; };
 		012DEBC92A72F78E0014551E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBC82A72F78E0014551E /* SceneDelegate.swift */; };
 		012DEBCB2A72F78E0014551E /* ImagesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012DEBCA2A72F78E0014551E /* ImagesListViewController.swift */; };
@@ -62,6 +66,10 @@
 		0118AFAA2AB653FD00417417 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		0118AFB22ABB4D0F00417417 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		0118AFB62ABBA5B000417417 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		0118AFB92ABDE3B500417417 /* AlertPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPresenter.swift; sourceTree = "<group>"; };
+		0118AFBB2ABDE41400417417 /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
+		0118AFBD2ABEC28500417417 /* NotificationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
+		0118AFBF2ABEE2B800417417 /* RootNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootNavigationController.swift; sourceTree = "<group>"; };
 		012DEBC32A72F78E0014551E /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		012DEBC62A72F78E0014551E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		012DEBC82A72F78E0014551E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,12 +126,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0118AF9D2AA779BD00417417 /* Model */ = {
+		0118AF9D2AA779BD00417417 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				013CBEF32AA5D25700037D3E /* OAuthTokenResponseBody.swift */,
+				0118AFBB2ABDE41400417417 /* AlertModel.swift */,
 			);
-			path = Model;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0118AFB82ABDE39700417417 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				0118AFB92ABDE3B500417417 /* AlertPresenter.swift */,
+			);
+			path = Alert;
 			sourceTree = "<group>";
 		};
 		012DEBBA2A72F78E0014551E = {
@@ -149,7 +166,8 @@
 		012DEBC52A72F78E0014551E /* ImageFeed */ = {
 			isa = PBXGroup;
 			children = (
-				0118AF9D2AA779BD00417417 /* Model */,
+				0118AFB82ABDE39700417417 /* Alert */,
+				0118AF9D2AA779BD00417417 /* Models */,
 				013CBEFD2AA7548900037D3E /* AnyHelps */,
 				013CBEFA2AA6860400037D3E /* Splash */,
 				013CBEF52AA5D2E500037D3E /* Services */,
@@ -192,6 +210,7 @@
 			children = (
 				013CBEEF2A9F32E100037D3E /* AuthViewController.swift */,
 				013CBEF12A9F34D400037D3E /* WebViewViewController.swift */,
+				0118AFBF2ABEE2B800417417 /* RootNavigationController.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -221,6 +240,7 @@
 				013CBEFE2AA754BF00037D3E /* URLRequestExtension.swift */,
 				013CBF002AA7550200037D3E /* URLSessionExtension.swift */,
 				0118AFB62ABBA5B000417417 /* UIColorExtension.swift */,
+				0118AFBD2ABEC28500417417 /* NotificationExtensions.swift */,
 			);
 			path = AnyHelps;
 			sourceTree = "<group>";
@@ -409,7 +429,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				013CBEF22A9F34D400037D3E /* WebViewViewController.swift in Sources */,
+				0118AFBA2ABDE3B500417417 /* AlertPresenter.swift in Sources */,
 				019245342A8B66C700AC0741 /* ProfileViewController.swift in Sources */,
+				0118AFC02ABEE2B800417417 /* RootNavigationController.swift in Sources */,
 				013CBEF72AA5D31900037D3E /* OAuth2Service.swift in Sources */,
 				012DEBCB2A72F78E0014551E /* ImagesListViewController.swift in Sources */,
 				012DEBD12A72F78E0014551E /* ImageFeed.xcdatamodeld in Sources */,
@@ -420,6 +442,7 @@
 				013CBF012AA7550200037D3E /* URLSessionExtension.swift in Sources */,
 				019245372A8C18BA00AC0741 /* SingleImageViewController.swift in Sources */,
 				01FBCAAA2A7CF7F300F9A80C /* ImagesListCell.swift in Sources */,
+				0118AFBC2ABDE41400417417 /* AlertModel.swift in Sources */,
 				0118AFAB2AB653FD00417417 /* ProfileImageService.swift in Sources */,
 				0118AFA72AB3249A00417417 /* ProfileService.swift in Sources */,
 				0118AFB32ABB4D0F00417417 /* TabBarController.swift in Sources */,
@@ -428,6 +451,7 @@
 				013CBEF02A9F32E100037D3E /* AuthViewController.swift in Sources */,
 				013CBEF92AA5E2B300037D3E /* OAuth2TokenStorage.swift in Sources */,
 				013CBEED2A9895B900037D3E /* Constants.swift in Sources */,
+				0118AFBE2ABEC28500417417 /* NotificationExtensions.swift in Sources */,
 				0118AFA22AB1E77E00417417 /* UIBlockingProgressHUD.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

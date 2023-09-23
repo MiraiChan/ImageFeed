@@ -11,14 +11,62 @@ import UIKit
 final class ProfileService {
     
     static let shared = ProfileService()
+    
+    private var urlSession = URLSession.shared
+    private let requestBuilder: URLRequestBuilder
+    private var fetchProfileTask: URLSessionTask?
     private(set) var profile: Profile?
     
-    private var fetchProfileTask: URLSessionTask?
-    private let urlSession = URLSession.shared
-    
+    init(urlSession: URLSession = .shared, requestBuilder: URLRequestBuilder = .shared) {
+      self.urlSession = urlSession
+      self.requestBuilder = requestBuilder
+    }
+  }
+
+private extension ProfileService {
+
+  func makeProfileRequest() -> URLRequest? {
+    requestBuilder.makeHTTPRequest(path: "/me")
+  }
+}
+
+extension ProfileService {
+    func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        fetchProfileTask?.cancel()
+        
+        guard let request = makeProfileRequest() else {
+            assertionFailure("Invalid request")
+            completion(.failure(ProfileError.invalidRequest))
+            return
+        }
+        
+        let session = URLSession.shared
+        fetchProfileTask = session.objectTask(for: request) {
+            [weak self] (result: Result<ProfileResult, Error>) in
+            guard let self else { preconditionFailure("Cannot make weak link") }
+            
+            self.fetchProfileTask = nil
+            switch result {
+            case .success(let profileResult):
+                let profile = Profile(username: profileResult.username,
+                                      name: "\(profileResult.firstName) \(profileResult.lastName ?? ProfileKeys.noLastname)",
+                                      loginName: "@\(profileResult.username)",
+                                      bio: profileResult.bio ?? ProfileKeys.noBio )
+                self.profile = profile
+                completion(.success(profile))
+            case .failure(_):
+                completion(.failure(ProfileError.decodingFailed))
+                self.profile = nil
+            }
+        }
+    }
+}
+
     enum ProfileError: Error {
         case unauthorized
         case invalidData
+        case invalidRequest
         case decodingFailed
     }
     
@@ -26,31 +74,6 @@ final class ProfileService {
         static let noBio = "User didn't fill biography box."
         static let noLastname = ""
     }
-    
-    func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
-        fetchProfileTask?.cancel()
-        
-        let url = URL(string: "https://api.unsplash.com/me")!
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
-        fetchProfileTask = urlSession.objectTask(for: request) {[weak self] (result: Result<ProfileResult, Error>) in
-            switch result {
-            case .success(let profileResult):
-                let profile = Profile(username: profileResult.username,
-                                      name: "\(profileResult.firstName) \(profileResult.lastName ?? ProfileKeys.noLastname)",
-                                      loginName: "@\(profileResult.username)",
-                                      bio: profileResult.bio ?? ProfileKeys.noBio )
-                self?.profile = profile
-                completion(.success(profile))
-            case .failure(_):
-                completion(.failure(ProfileError.decodingFailed))
-                self?.profile = nil
-            }
-        }
-        fetchProfileTask?.resume()
-    }
-}
 
 struct ProfileResult: Codable {
     let username: String
@@ -75,6 +98,7 @@ struct Profile: Codable {
 
 enum ProfileServiceError: Error {
     case invalidURL
+    case invalidRequest
     case invalidData
     case decodingFailed
 }

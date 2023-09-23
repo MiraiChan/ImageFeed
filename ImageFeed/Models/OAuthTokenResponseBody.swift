@@ -7,7 +7,7 @@
 
 import Foundation
 
-// структура для декодинга JSON-ответа от Unsplash
+
 struct OAuthTokenResponseBody: Decodable {
     let accessToken: String
     let tokenType: String
