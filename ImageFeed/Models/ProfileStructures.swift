@@ -43,7 +43,7 @@ extension Profile {
       username: profile.username,
       name: "\(profile.firstName ?? "") \(profile.lastName ?? "")",
       loginName: "@\(profile.username)",
-      bio: profile.bio
+      bio: profile.bio ?? "User didn't fill biography box."
     )
   }
 }
