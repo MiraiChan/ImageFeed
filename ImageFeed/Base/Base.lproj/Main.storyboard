@@ -249,7 +249,6 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="didTapAuthButton:" destination="lJm-Vy-EjX" eventType="touchUpInside" id="j39-wu-pSg"/>
                                     <segue destination="3mb-dd-yex" kind="presentation" identifier="ShowWebView" modalPresentationStyle="overFullScreen" id="7Av-eP-dhW"/>
                                 </connections>
                             </button>
@@ -272,9 +271,6 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ze6-FL-xnp"/>
-                    <connections>
-                        <outlet property="authButton" destination="EKM-gZ-E6t" id="pCi-Wd-SKJ"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QBR-hs-Kkg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

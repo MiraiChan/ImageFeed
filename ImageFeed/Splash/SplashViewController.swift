@@ -69,14 +69,6 @@ private extension SplashViewController {
 }
 
 private extension SplashViewController {
-    private func switchToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
-        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
-            .instantiateViewController(withIdentifier: "TabBarViewController")
-        
-        window.rootViewController = tabBarController
-    }
-    
     private func switchToAuthViewController() {
         let storyBoard = UIStoryboard(name: "Main", bundle: .main)
         guard let authViewController = storyBoard.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController else { return }
@@ -85,8 +77,16 @@ private extension SplashViewController {
         present(authViewController, animated: true)
     }
     
+    private func switchToTabBarController() {
+        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
+        let tabBarController = UIStoryboard(name: "Main", bundle: .main)
+            .instantiateViewController(withIdentifier: "TabBarViewController")
+        
+        window.rootViewController = tabBarController
+    }
+    
     private func splashScreenUISetup() {
-        view.backgroundColor = .ypBlack
+        view.backgroundColor = .ypBackground
         
         let splashScreenImage = UIImage(named: "splash_screen_logo")
         let splashScreenImageView = UIImageView(image: splashScreenImage)
@@ -153,7 +153,7 @@ private extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        vc.dismiss(animated: true) {
+        dismiss(animated: true) {
             [weak self] in
             guard let self else { return }
             self.fetchAuthToken(code)
