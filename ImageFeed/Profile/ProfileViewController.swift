@@ -45,7 +45,7 @@ final class ProfileViewController: UIViewController {
         
         switchToSplashViewController()
     }
-
+    
     
     @objc func updateAvatar(notification: Notification) {
         guard
@@ -58,11 +58,11 @@ final class ProfileViewController: UIViewController {
     }
     
     func checkAvatar() {
-      if let url = profileImageService.avatarURL{
-        updateAvatar(url: url)
-      }
+        if let url = profileImageService.avatarURL{
+            updateAvatar(url: url)
+        }
     }
-
+    
     
     func updateAvatar(url: URL) {
         let cache = ImageCache.default
@@ -101,7 +101,7 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupImageView() {
-        let profileImage = UIImage(named: "profileImage")
+        let profileImage = UIImage(named: "user_picture")
         imageView.image = profileImage
         imageView.tintColor = .gray
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -170,14 +170,13 @@ final class ProfileViewController: UIViewController {
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
-        
+    
     func switchToSplashViewController() {
         
         guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
         let splashViewController = SplashViewController()
         window.rootViewController = splashViewController
     }
-    
 }
 
 private extension ProfileViewController {
@@ -191,9 +190,9 @@ private extension ProfileViewController {
     }
     
     func resetView() {
-      self.label1.text = "User's name"
-      self.label2.text = ""
-      self.label3.text = ""
-      self.imageView.image = UIImage(named: "user_picture")
+        self.label1.text = "User's name"
+        self.label2.text = ""
+        self.label3.text = ""
+        self.imageView.image = UIImage(named: "user_picture")
     }
 }

@@ -24,10 +24,10 @@ final class ProfileImageService {
 }
 
 private extension ProfileImageService {
-
-  func makeRequest(userName: String) -> URLRequest? {
-    requestBuilder.makeHTTPRequest(path: "/users/\(userName)")
-  }
+    
+    func makeRequest(userName: String) -> URLRequest? {
+        requestBuilder.makeHTTPRequest(path: "/users/\(userName)")
+    }
 }
 extension ProfileImageService {
     
@@ -39,39 +39,28 @@ extension ProfileImageService {
             assertionFailure("Invalid request")
             completion(.failure(ProfileServiceError.invalidRequest))
             return
-          }
+        }
         
         let dataTask = urlSession.objectTask(for: request) {
-            [weak self] (result: Result<UserResult, Error>) in
+            [weak self] (result: Result<ProfileResult, Error>) in
+            guard let self else { preconditionFailure("Cannot make weak link") }
             switch result {
-            case .success(let userResult):
-                let mediumPhoto = userResult.profileImage.medium 
-                self?.avatarURL = URL(string: mediumPhoto)
-                    completion(.success(mediumPhoto))
-                    NotificationCenter.default.post(name: ProfileImageService.didChangeNotification,
-                                                    object: self,
-                                                    userInfo:  ["URL": userResult.profileImage.medium])
+            case .success(let profileResult):
+                guard let mediumPhoto = profileResult.profileImage?.medium else { return }
+                self.avatarURL = URL(string: mediumPhoto)
+                completion(.success(mediumPhoto))
+                NotificationCenter.default.post(
+                    name: ProfileImageService.didChangeNotification,
+                    object: self,
+                    userInfo:  ["URL": mediumPhoto]
+                )
             case .failure(_):
                 completion(.failure(ProfileServiceError.invalidData))
             }
-            self?.task = nil
+            self.task = nil
         }
         self.task = dataTask
         dataTask.resume()
-    }
-}
-
-struct UserResult: Codable {
-    let profileImage: ProfileImage
-    
-    enum CodingKeys: String, CodingKey {
-        case profileImage =  "profile_image"
-    }
-    
-    struct ProfileImage: Codable {
-        let small: String
-        let medium: String
-        let large: String
     }
 }
 

@@ -22,17 +22,17 @@ final class SplashViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-      super.viewDidLoad()
-      alertPresenter = AlertPresenter(viewController: self)
-      splashScreenUISetup()
-      UIBlockingProgressHUD.setup()
+        super.viewDidLoad()
+        alertPresenter = AlertPresenter(viewController: self)
+        splashScreenUISetup()
+        UIBlockingProgressHUD.setup()
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(true)
-    authStatusChecker()
+        super.viewDidAppear(true)
+        authStatusChecker()
     }
-  }
+}
 
 private extension SplashViewController {
     func authStatusChecker () {
@@ -61,7 +61,7 @@ private extension SplashViewController {
                         assertionFailure("Cannot remove token")
                         return
                     }
-                self.authStatusChecker()
+                    self.authStatusChecker()
                 }
             self.alertPresenter?.showAlert(for: alertModel)
         }

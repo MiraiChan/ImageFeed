@@ -24,7 +24,7 @@ final class UIBlockingProgressHUD {
     }
     
     static func setup() {
-      ProgressHUD.animationType = .circleRotateChase
-      ProgressHUD.colorHUD = .clear
+        ProgressHUD.animationType = .circleRotateChase
+        ProgressHUD.colorHUD = .clear
     }
 }

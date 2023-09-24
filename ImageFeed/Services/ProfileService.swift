@@ -18,16 +18,16 @@ final class ProfileService {
     private(set) var profile: Profile?
     
     init(urlSession: URLSession = .shared, requestBuilder: URLRequestBuilder = .shared) {
-      self.urlSession = urlSession
-      self.requestBuilder = requestBuilder
+        self.urlSession = urlSession
+        self.requestBuilder = requestBuilder
     }
-  }
+}
 
 private extension ProfileService {
-
-  func makeProfileRequest() -> URLRequest? {
-    requestBuilder.makeHTTPRequest(path: "/me")
-  }
+    
+    func makeProfileRequest() -> URLRequest? {
+        requestBuilder.makeHTTPRequest(path: "/me")
+    }
 }
 
 extension ProfileService {
@@ -59,26 +59,17 @@ extension ProfileService {
     }
 }
 
-    enum ProfileError: Error {
-        case unauthorized
-        case invalidData
-        case invalidRequest
-        case decodingFailed
-    }
-    
-    private struct ProfileKeys {
-        static let noBio = "User didn't fill biography box."
-        static let noLastname = ""
-    }
+enum ProfileError: Error {
+    case unauthorized
+    case invalidData
+    case invalidRequest
+    case decodingFailed
+}
 
-    
-//    enum CodingKeys: String, CodingKey {
-//        case username
-//        case firstName = "first_name"
-//        case lastName = "last_name"
-//        case bio
-//    }
-
+private struct ProfileKeys {
+    static let noBio = "User didn't fill biography box."
+    static let noLastname = ""
+}
 
 enum ProfileServiceError: Error {
     case invalidURL
