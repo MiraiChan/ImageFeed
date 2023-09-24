@@ -41,7 +41,8 @@ private extension SplashViewController {
         if oauth2Service.isAuthenticated {
             UIBlockingProgressHUD.show()
             fetchProfile {
-                [weak self] in UIBlockingProgressHUD.dismiss()
+                [weak self] in
+                UIBlockingProgressHUD.dismiss()
                 self?.switchToTabBarController()
             }
         } else {
@@ -53,8 +54,8 @@ private extension SplashViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             let alertModel = AlertModel(
-                title: "Что-то пошло не так :(",
-                message: "Не удалось войти в систему: \(error.localizedDescription)",
+                title: "Что-то пошло не так (",
+                message: "Не удалось войти в систему",
                 buttonText: "Ok") {
                     self.wasChecked = false
                     guard OAuth2TokenStorage.shared.removeToken() else {
