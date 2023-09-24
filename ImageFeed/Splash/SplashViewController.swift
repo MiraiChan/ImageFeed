@@ -61,7 +61,7 @@ private extension SplashViewController {
                         assertionFailure("Cannot remove token")
                         return
                     }
-                // self.authStatusChecker()
+                self.authStatusChecker()
                 }
             self.alertPresenter?.showAlert(for: alertModel)
         }
@@ -107,7 +107,6 @@ private extension SplashViewController {
         UIBlockingProgressHUD.show()
         
         oauth2Service.fetchAuthToken(code) { [weak self] result in
-            print(11)
             guard let self else { preconditionFailure("Cannot fetch auth token") }
             switch result {
             case .success(_):
@@ -151,7 +150,6 @@ private extension SplashViewController {
         }
     }
 }
-
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {

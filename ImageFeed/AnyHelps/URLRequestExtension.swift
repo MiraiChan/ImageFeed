@@ -16,7 +16,7 @@ final class URLRequestBuilder {
     func makeHTTPRequest(path: String, httpMethod: String? = nil, baseURLString: String? = nil) -> URLRequest? {
         
         guard
-            let url = URL(string: "https://api.unsplash.com/me"),
+            let url = URL(string: baseURLString ?? "https://api.unsplash.com/me"),
             let baseURL = URL(string: path, relativeTo: url)
         else { return nil }
         
