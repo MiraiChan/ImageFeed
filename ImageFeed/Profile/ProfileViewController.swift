@@ -40,10 +40,8 @@ final class ProfileViewController: UIViewController {
     
     @objc
     private func didTapButton() {
-        imageView.image = UIImage(named: "user_picture")
-        label1.text = "User's name"
         resetToken()
-        logoutButton.isEnabled = false
+        resetView()
         
         switchToSplashViewController()
     }
@@ -190,5 +188,12 @@ private extension ProfileViewController {
             assertionFailure("Cannot remove token")
             return
         }
+    }
+    
+    func resetView() {
+      self.label1.text = "User's name"
+      self.label2.text = ""
+      self.label3.text = ""
+      self.imageView.image = UIImage(named: "user_picture")
     }
 }
