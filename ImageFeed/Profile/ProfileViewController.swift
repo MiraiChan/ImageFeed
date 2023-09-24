@@ -63,7 +63,6 @@ final class ProfileViewController: UIViewController {
         }
     }
     
-    
     func updateAvatar(url: URL) {
         let cache = ImageCache.default
         cache.clearMemoryCache()
@@ -182,7 +181,6 @@ final class ProfileViewController: UIViewController {
 private extension ProfileViewController {
     
     func resetToken() {
-        
         guard oauth2TokenStorage.removeToken() else {
             assertionFailure("Cannot remove token")
             return
