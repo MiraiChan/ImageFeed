@@ -17,6 +17,8 @@ final class SplashViewController: UIViewController {
     private var alertPresenter: AlertPresenting?
     private var wasChecked = false
     
+    private let lock = NSLock()
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
@@ -122,15 +124,20 @@ private extension SplashViewController {
     }
     
     func fetchProfile(completion: @escaping () -> Void) {
+        UIBlockingProgressHUD.show()
+        
         profileService.fetchProfile { [weak self] result in
             guard let self else { preconditionFailure("Cannot fetch Profile result") }
+            
             switch result {
             case .success(let profile):
                 let userName = profile.username
                 self.fetchProfileImage(userName: userName)
                 self.switchToTabBarController()
             case .failure(let error):
+                self.lock.lock()
                 self.showLoginAlert(error: error)
+                self.lock.unlock()
             }
             completion()
         }
