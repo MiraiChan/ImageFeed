@@ -17,8 +17,6 @@ final class SplashViewController: UIViewController {
     private var alertPresenter: AlertPresenting?
     private var wasChecked = false
     
-    private let lock = NSLock()
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
@@ -51,8 +49,8 @@ private extension SplashViewController {
             switchToAuthViewController()
         }
     }
-    
-    func showLoginAlert(error: Error) {
+
+    func showLoginAlert(error: Error, cb: (() -> Void)? = nil) {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             let alertModel = AlertModel(
@@ -67,6 +65,7 @@ private extension SplashViewController {
                     self.authStatusChecker()
                 }
             self.alertPresenter?.showAlert(for: alertModel)
+            cb?()
         }
     }
 }
@@ -134,12 +133,10 @@ private extension SplashViewController {
                 let userName = profile.username
                 self.fetchProfileImage(userName: userName)
                 self.switchToTabBarController()
+                completion()
             case .failure(let error):
-                self.lock.lock()
-                self.showLoginAlert(error: error)
-                self.lock.unlock()
+                self.showLoginAlert(error: error, cb: completion)
             }
-            completion()
         }
     }
     
@@ -169,4 +166,45 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
 }
 
+//для избежания гонки в func fetchProfileImage еще варианты:
+/* private let lock = NSLock()
+...
+private extension SplashViewController {
+    func fetchAuthToken(_ code: String) {
+        UIBlockingProgressHUD.show()
+        
+        oauth2Service.fetchAuthToken(code) { [weak self] result in
+            guard let self else { preconditionFailure("Cannot fetch auth token") }
+            switch result {
+            case .success(_):
+                self.fetchProfile(completion: {
+                    UIBlockingProgressHUD.dismiss()
+                })
+            case .failure(let error):
+                self.showLoginAlert(error: error)
+                UIBlockingProgressHUD.dismiss()
+            }
+        }
+    }
+ 
+ или
+ 
+ func fetchProfile(completion: @escaping () -> Void) {
+         UIBlockingProgressHUD.show()
+         
+         profileService.fetchProfile { [weak self] result in
+             guard let self else { preconditionFailure("Cannot fetch Profile result") }
+             
+             switch result {
+             case .success(let profile):
+                 let userName = profile.username
+                 self.fetchProfileImage(userName: userName)
+                 self.switchToTabBarController()
+             case .failure(let error): DispatchQueue.main.async {
+                self.showLoginAlert(error: error) }
+                 
+             }  DispatchQueue.main.asyncAfter {deadline: .now() + 0.1) {
+             completion() }
+         }
+     }*/
 
