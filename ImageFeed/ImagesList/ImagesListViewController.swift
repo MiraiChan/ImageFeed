@@ -95,3 +95,13 @@ extension ImagesListViewController: UITableViewDelegate {
         return cellHeight
     }
 }
+//func tableView(
+//_ tableView: UITableView,
+//willDisplay cell: UITableViewCell,
+//forRowAt indexPath: IndexPath
+//) {
+//  // ...
+//
+//indexPath.row + 1 == photos.count
+//fetchPhotosNextPage()}
+
