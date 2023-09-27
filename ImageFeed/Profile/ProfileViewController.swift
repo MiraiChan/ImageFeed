@@ -5,26 +5,102 @@
 //  Created by Almira Khafizova on 15.08.23.
 //
 
-import Foundation
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
-    private var label1: UILabel?
+    private var label1: UILabel!
     private var label2 = UILabel()
     private var label3 = UILabel()
     private let imageView = UIImageView()
+    private var logoutButton: UIButton!
     
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupImageView()
         setupLabel()
         setupButton()
+        view.backgroundColor = .ypBlack
+        checkAvatar()
+        
+        updateProfileDetails(profile: profileService.profile)
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadProfile()
+    }
+    
+    @objc
+    private func didTapButton() {
+        resetToken()
+        resetView()
+        
+        switchToSplashViewController()
+    }
+    
+    
+    @objc func updateAvatar(notification: Notification) {
+        guard
+            isViewLoaded,
+            let userInfo = notification.userInfo,
+            let profileImageURL = userInfo[Notification.userInfoImageURLKey] as? String,
+            let url = URL(string: profileImageURL)
+        else { return }
+        updateAvatar(url: url)
+    }
+    
+    func checkAvatar() {
+        if let url = profileImageService.avatarURL{
+            updateAvatar(url: url)
+        }
+    }
+    
+    func updateAvatar(url: URL) {
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: url,
+                              placeholder: UIImage(named: "user_picture"),
+                              options: [.processor(processor)])
+    }
+    
+    func updateProfileDetails(profile: Profile?) {
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main,
+            using: { [weak self] notification in
+                guard let self else { return }
+                self.updateAvatar(notification: notification)
+            }
+        )
+    }
+    
+    func loadProfile() {
+        if let profile = profileService.profile {
+            label1.text = profile.name
+            label2.text = profile.loginName
+            label3.text = profile.bio
+        } else {
+            label1.text = "Error"
+            label2.text = "Error"
+            label3.text = "Error"
+        }
+    }
+    
     private func setupImageView() {
-        let profileImage = UIImage(named: "profileImage")
+        let profileImage = UIImage(named: "user_picture")
         imageView.image = profileImage
         imageView.tintColor = .gray
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -82,29 +158,39 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupButton() {
-        let button = UIButton.systemButton(
+        let logoutButton = UIButton.systemButton(
             with: UIImage(systemName: "ipad.and.arrow.forward")!,
             target: self,
             action: #selector(Self.didTapButton)
         )
-        button.tintColor = .red
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        button.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        logoutButton.tintColor = .ypRed
+        logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(logoutButton)
+        logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
+        logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
     
-    @objc
-    private func didTapButton() {
-        // Решение 1
-        label1?.removeFromSuperview()
-        label1 = nil
+    func switchToSplashViewController() {
         
-        // Решение 2
-        for view in view.subviews {
-            if view is UILabel {
-                view.removeFromSuperview()
-            }
+        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
+        let splashViewController = SplashViewController()
+        window.rootViewController = splashViewController
+    }
+}
+
+private extension ProfileViewController {
+    
+    func resetToken() {
+        guard oauth2TokenStorage.removeToken() else {
+            assertionFailure("Cannot remove token")
+            return
         }
+    }
+    
+    func resetView() {
+        self.label1.text = "User's name"
+        self.label2.text = ""
+        self.label3.text = ""
+        self.imageView.image = UIImage(named: "user_picture")
     }
 }

@@ -15,15 +15,43 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 final class WebViewViewController: UIViewController {
     
+    // MARK: - IBOutlets
+    
     @IBOutlet private var webView: WKWebView!
     @IBOutlet var progressView: UIProgressView!
     
+    // MARK: - Public properties
+    
     weak var delegate: WebViewViewControllerDelegate?
+    private var estimatedProgressObservation: NSKeyValueObservation?
+    
+    // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         webView.navigationDelegate = self
-        //MARK: Url
+        webViewLoading()
+        progressObservation()
+        updateProgress()
+    }
+    
+    // MARK: - IBActions
+    
+    @IBAction func didTapBackButton(_ sender: UIButton) {
+        delegate?.webViewViewControllerDidCancel(self)
+    }
+    
+    // MARK: - Private methods
+    
+    private func updateProgress() {
+        progressView.progress = Float(webView.estimatedProgress)
+        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
+    }
+    
+    private func webViewLoading () {
+        
+        //Url
         guard var urlComponents = URLComponents(string: UnsplashAuthorizeURLString)
         else {
             fatalError("Incorrect base URL")
@@ -38,42 +66,30 @@ final class WebViewViewController: UIViewController {
             fatalError("Unable to build URL")
         }
         
-        //MARK:  URLRequest
+        //URLRequest
         let request = URLRequest(url: url)
         webView.load(request)
-        
-        updateProgress()
-    }
-    @IBAction func didTapBackButton(_ sender: UIButton) {
-        delegate?.webViewViewControllerDidCancel(self)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        webView.addObserver(
-            self,
-            forKeyPath: #keyPath(WKWebView.estimatedProgress),
-            context: nil)
-        updateProgress()
+    private func progressObservation() {
+        estimatedProgressObservation = webView.observe (\.estimatedProgress, changeHandler: { [weak self] _, _ in
+            guard let self else { return }
+            self.updateProgress()
+        })
     }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        webView.removeObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), context: nil)
-    }
-    
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(WKWebView.estimatedProgress) {
-            updateProgress()
+}
+// MARK: - WKNavigationDelegate
+extension WebViewViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+    ) {
+        if let code = code(from: navigationAction) {
+            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+            decisionHandler(.cancel)
         } else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            decisionHandler(.allow)
         }
-    }
-    
-    private func updateProgress() {
-        progressView.progress = Float(webView.estimatedProgress)
-        progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {
@@ -86,21 +102,6 @@ final class WebViewViewController: UIViewController {
             return codeItem.value
         } else {
             return nil
-        }
-    }
-}
-
-extension WebViewViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
-    ) {
-        if let code = code(from: navigationAction) {
-            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
-            decisionHandler(.cancel)
-            print("11111")
-        } else {
-            decisionHandler(.allow)
         }
     }
 }

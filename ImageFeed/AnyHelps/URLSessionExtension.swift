@@ -4,48 +4,45 @@
 //
 //  Created by Almira Khafizova on 05.09.23.
 //
-
 import Foundation
 
 enum NetworkError: Error {
     case httpStatusCode(Int)
     case urlRequestError(Error)
     case urlSessionError
+    case decodingError
+    case invalidRequest
 }
 
 extension URLSession {
     
-    /// Вспомогательный метод для выполнения сетевого запроса
-    func data(
-        for request: URLRequest,
-        complition: @escaping (Result<Data,Error>) -> Void
-    ) -> URLSessionTask {
-        let fulfillCompleteon: (Result<Data,Error>) -> Void = { result in
+    func objectTask<T:Decodable>(for request: URLRequest, completion: @escaping (Result<T, Error>) -> Void) -> URLSessionTask {
+        let fulfillCompletion: (Result<T, Error>) -> Void = { result in
             DispatchQueue.main.async {
-                complition(result)
+                completion(result)
             }
         }
-        
-        let task = dataTask(with: request) { data, response, error in
-            if let data = data,
-               let response = response,
-               let statusCode = (response as? HTTPURLResponse)?.statusCode
-            {
-                if 200 ..< 300 ~= statusCode {
-                    print(String(data: data, encoding: .utf8)!)
-                    fulfillCompleteon(.success(data))
+        let session = URLSession.shared
+        let task = session.dataTask(with: request) { data, response, error in
+            if let data, let response, let statusCode = (response as? HTTPURLResponse)?.statusCode {
+                if 200..<300 ~= statusCode {
+                    do {
+                        let decoder = SnakeCaseJSONDecoder()
+                        let decodedModel = try decoder.decode(T.self, from: data)
+                        fulfillCompletion(.success(decodedModel))
+                    } catch {
+                        fulfillCompletion(.failure(NetworkError.decodingError))
+                    }
                 } else {
-                    fulfillCompleteon(.failure(NetworkError.httpStatusCode(statusCode)))
+                    fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
                 }
-            } else if let error = error {
-                fulfillCompleteon(.failure(NetworkError.urlRequestError(error)))
+            } else if let error {
+                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
             } else {
-                fulfillCompleteon(.failure(NetworkError.urlSessionError))
+                fulfillCompletion(.failure(NetworkError.urlSessionError))
             }
         }
-        
         task.resume()
         return task
     }
 }
-
