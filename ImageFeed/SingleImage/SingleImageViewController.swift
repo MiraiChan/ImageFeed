@@ -17,6 +17,8 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
+    var largeImageURL: URL?
+    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
     

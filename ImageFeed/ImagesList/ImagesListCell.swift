@@ -4,17 +4,37 @@
 //
 //  Created by Almira Khafizova on 04.08.23.
 
-import Foundation
 import UIKit
+import Kingfisher
+
+protocol ImagesListCellDelegate: AnyObject {
+  func imagesListCellDidTapLike(_ cell: ImagesListCell)
+}
 
 final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
+    private let placeholderImage = UIImage(named: "stub")
+    weak var delegate: ImagesListCellDelegate?
     
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var gradientView: UIView!
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
+    }
+    
+    func loadCell(from photo: Photo) -> Bool {
+        var status = false
+        
+        if let photoDate = photo.createdAt {
+            dateLabel.text = dateFormatter.string(from: photoDate)
+            
+        }
+    }
     
     func setGradientBackground() {
         

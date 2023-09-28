@@ -15,6 +15,12 @@ struct Photo {
     let thumbImageURL: String
     let largeImageURL: String
     let isLiked: Bool
+    let thumbSize: CGSize
+}
+
+struct UrlsResult: Codable {
+  let small: String
+  let full: String
 }
 
 struct PhotoResult: Codable {
