@@ -19,7 +19,7 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     private (set) var photos: [Photo] = []
     
-    private init() { }
+    init() { }
     
     func makeLikeRequest(for id: String, with method: String) -> URLRequest? {
         requestBuilder.makeHTTPRequest(path: "/photos/\(id)/like", httpMethod: method)
