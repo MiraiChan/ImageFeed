@@ -14,13 +14,21 @@ struct Photo {
     let welcomeDescription: String?
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    var isLiked: Bool
     let thumbSize: CGSize
 }
 
 struct UrlsResult: Codable {
   let small: String
   let full: String
+}
+
+struct LikeResult: Codable {
+  let photo: PhotoLikeResult
+}
+
+struct PhotoLikeResult: Codable {
+  let likedByUser: Bool
 }
 
 struct PhotoResult: Codable {

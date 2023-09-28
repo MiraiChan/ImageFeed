@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Kingfisher
 
 final class ImagesListViewController: UIViewController {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
@@ -19,10 +18,13 @@ final class ImagesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //view.backgroundColor = .ypBlack
+        view.backgroundColor = .ypBlack
         tableView.dataSource = self
         tableView.delegate = self
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        
+        setupImageListService()
+        setupNotificationObserver()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
@@ -117,6 +119,22 @@ extension ImagesListViewController: UITableViewDataSource {
 }
 
 extension ImagesListViewController: ImagesListCellDelegate {
-  func imagesListCellDidTapLike(_ cell: ImagesListCell) {
-  }
+    func imagesListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self ] result in
+            guard let self else { return }
+            switch result {
+            case .success(let isLiked):
+                self.photos[indexPath.row].isLiked = isLiked
+                cell.setIsLiked(isLiked)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print("\(error.localizedDescription)")
+                //alert
+            }
+        }
+    }
 }

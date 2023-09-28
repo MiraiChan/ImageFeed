@@ -8,7 +8,7 @@ import UIKit
 import Kingfisher
 
 protocol ImagesListCellDelegate: AnyObject {
-  func imagesListCellDidTapLike(_ cell: ImagesListCell)
+    func imagesListCellDidTapLike(_ cell: ImagesListCell)
 }
 
 final class ImagesListCell: UITableViewCell {
@@ -27,13 +27,38 @@ final class ImagesListCell: UITableViewCell {
         cellImage.kf.cancelDownloadTask()
     }
     
+    @IBAction func didTapLikeButton(_ sender: Any) {
+        delegate?.imagesListCellDidTapLike(self)
+    }
+    
+    func setIsLiked(_ isLiked: Bool) {
+        let likedImage = isLiked ? UIImage(named: "like_button_on") : UIImage(named: "like_button_off")
+        likeButton.setImage(likedImage, for: .normal)
+    }
+    
     func loadCell(from photo: Photo) -> Bool {
         var status = false
         
         if let photoDate = photo.createdAt {
             dateLabel.text = dateFormatter.string(from: photoDate)
-            
         }
+        
+        setIsLiked(photo.isLiked)
+        
+        guard let photoURL = URL(string: photo.thumbImageURL) else { return status }
+        
+        cellImage.kf.indicatorType = .activity
+        cellImage.kf.setImage(with: photoURL, placeholder: placeholderImage) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(_):
+                status = true
+            case .failure(let error):
+                cellImage.image = placeholderImage
+                print("\(error.localizedDescription)")
+            }
+        }
+        return status
     }
     
     func setGradientBackground() {

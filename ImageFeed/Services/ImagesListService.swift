@@ -21,6 +21,10 @@ final class ImagesListService {
     
     private init() { }
     
+    func makeLikeRequest(for id: String, with method: String) -> URLRequest? {
+        requestBuilder.makeHTTPRequest(path: "/photos/\(id)/like", httpMethod: method)
+    }
+    
     func makePhotosListRequest(page: Int) -> URLRequest? {
         requestBuilder.makeHTTPRequest(
             path: "/photos"
@@ -50,10 +54,52 @@ final class ImagesListService {
         )
     }
     
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Bool, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        guard currentTask == nil else { return }
+        let method = isLike ? "POST" : "DELETE"
+        
+        guard let request = makeLikeRequest(for: photoId, with: method) else {
+            assertionFailure("Invalid request")
+            print(NetworkError.invalidRequest)
+            return
+        }
+        
+        let task = session.objectTask(for: request) { [weak self] (result: Result<LikeResult, Error>) in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                switch result {
+                case .success(let photoLiked):
+                    let likedByUser = photoLiked.photo.likedByUser
+                    if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                        let photo = self.photos[index]
+                        let newPhoto = Photo(
+                            id: photo.id,
+                            size: photo.size,
+                            createdAt: photo.createdAt,
+                            welcomeDescription: photo.welcomeDescription,
+                            thumbImageURL: photo.thumbImageURL,
+                            largeImageURL: photo.largeImageURL,
+                            isLiked: likedByUser,
+                            thumbSize: photo.thumbSize
+                        )
+                        self.photos[index] = newPhoto
+                    }
+                    completion(.success(likedByUser))
+                    self.currentTask = nil
+                    
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+        currentTask = task
+        task.resume()
+    }
+    
     func resetPhotos() {
         photos = []
     }
-    
     
     func fetchPhotosNextPage() {
         assert(Thread.isMainThread)
@@ -92,8 +138,3 @@ final class ImagesListService {
         task.resume()
     }
 }
-
-
-
-
-
