@@ -8,6 +8,8 @@
 import Foundation
 
 final class ImagesListService {
+    static let shared = ImagesListService()
+    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     private (set) var photos: [Photo] = []
     
     private var lastLoadedPage: Int?
@@ -15,20 +17,17 @@ final class ImagesListService {
     // ...
     
     func fetchPhotosNextPage() {
+        assert(Thread.isMainThread)
         
-        let nextPage = lastLoadedPage == nil
+        let nextPage = makeNextPageNumber()
+        //lastLoadedPage == nil
         ? 1
         : lastLoadedPage!.number + 1
         
         // ...
     }
-}
-struct Photo {
-    let id: String
-    let size: CGSize
-    let createdAt: Date?
-    let welcomeDescription: String?
-    let thumbImageURL: String
-    let largeImageURL: String
-    let isLiked: Bool
+    
+    func makeNextPageNumber() {
+        
+    }
 }
