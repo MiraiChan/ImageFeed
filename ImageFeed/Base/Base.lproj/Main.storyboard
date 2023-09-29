@@ -197,8 +197,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="o3o-KR-XPU"/>
                     <connections>
+                        <outlet property="backButton" destination="yjI-W9-QaM" id="4Mx-bJ-Ex1"/>
                         <outlet property="imageView" destination="Alc-Am-5LW" id="qOi-1A-xql"/>
                         <outlet property="scrollView" destination="Lo6-JD-Ssf" id="aZS-ES-bog"/>
+                        <outlet property="shareButton" destination="oxf-Xu-eCJ" id="nfo-DY-9OT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tuy-6n-Jwa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
