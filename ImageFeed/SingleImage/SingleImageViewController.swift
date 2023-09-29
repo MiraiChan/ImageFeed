@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 final class SingleImageViewController: UIViewController {
+    private var alertPresenter: AlertPresenting?
+    
     var image: UIImage! {
         didSet {
             guard isViewLoaded else { return }
@@ -74,7 +76,35 @@ final class SingleImageViewController: UIViewController {
         scrollView.setContentOffset(CGPoint(x: x, y: y), animated: false)
     }
     
-    func downloadImage() {}
+    func downloadImage() {
+      UIBlockingProgressHUD.show()
+      imageView.kf.setImage(with: largeImageURL) { [weak self] result in
+        UIBlockingProgressHUD.dismiss()
+        guard let self else { return }
+        switch result {
+        case .success(let imageResult):
+          self.image = imageResult.image
+          self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+        case .failure:
+          showError()
+        }
+      }
+    }
+
+    func showError() {
+      DispatchQueue.main.async { [weak self] in
+        guard let self else { return }
+        let alertModel = AlertModel(
+          title: "Что-то пошло не так",
+          message: "Попробовать ещё раз?",
+          buttonText: "Не надо",
+          completion: { self.dismiss(animated: true) },
+          secondButtonText: "Повторить",
+          secondCompletion: { self.downloadImage() }
+        )
+        self.alertPresenter?.showAlert(for: alertModel)
+      }
+    }
 }
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
