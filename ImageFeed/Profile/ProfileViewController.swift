@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import WebKit
 
 final class ProfileViewController: UIViewController {
     private var label1: UILabel!
@@ -192,5 +193,14 @@ private extension ProfileViewController {
         self.label2.text = ""
         self.label3.text = ""
         self.imageView.image = UIImage(named: "user_picture")
+    }
+    
+    func cleanCookies() {
+      HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+      WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+        records.forEach { record in
+          WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record]) { }
+        }
+      }
     }
 }
