@@ -19,34 +19,34 @@ final class ProfileViewController: UIViewController {
     private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    private var alertPresenter: AlertPresenting?
     private var profileImageServiceObserver: NSObjectProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupImageView()
-        setupLabel()
-        setupButton()
         view.backgroundColor = .ypBlack
+        alertPresenter = AlertPresenter(viewController: self)
+        
         checkAvatar()
         
         updateProfileDetails(profile: profileService.profile)
         
+        setupImageView()
+        setupLabel()
+        setupButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadProfile()
     }
+}
+
+private extension ProfileViewController {
     
-    @objc
-    private func didTapButton() {
-        resetToken()
-        resetView()
-        
-        switchToSplashViewController()
+    @objc func didTapButton() {
+        showAlert()
     }
-    
     
     @objc func updateAvatar(notification: Notification) {
         guard
@@ -98,6 +98,28 @@ final class ProfileViewController: UIViewController {
             label2.text = "Error"
             label3.text = "Error"
         }
+    }
+    
+    func showAlert() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            let alertModel = AlertModel(
+                title: "Пока, пока!",
+                message: "Уверены, что хотите выйти?",
+                buttonText: "Да",
+                completion: { self.resetAccount() },
+                secondButtonText: "Нет",
+                secondCompletion: { self.dismiss(animated: true) }
+            )
+            self.alertPresenter?.showAlert(for: alertModel)
+        }
+    }
+    
+    func switchToSplashViewController() {
+        
+        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
+        let splashViewController = SplashViewController()
+        window.rootViewController = splashViewController
     }
     
     private func setupImageView() {
@@ -160,9 +182,9 @@ final class ProfileViewController: UIViewController {
     
     private func setupButton() {
         let logoutButton = UIButton.systemButton(
-            with: UIImage(systemName: "ipad.and.arrow.forward")!,
+            with: UIImage(systemName: "ipad.and.arrow.forward") ?? UIImage(),
             target: self,
-            action: #selector(Self.didTapButton)
+            action: #selector(self.didTapButton)
         )
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -170,16 +192,17 @@ final class ProfileViewController: UIViewController {
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
         logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
-    
-    func switchToSplashViewController() {
-        
-        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
-        let splashViewController = SplashViewController()
-        window.rootViewController = splashViewController
-    }
 }
 
 private extension ProfileViewController {
+    
+    func resetAccount() {
+        resetToken()
+        resetView()
+        resetPhotos()
+        cleanCookies()
+        switchToSplashViewController()
+    }
     
     func resetToken() {
         guard oauth2TokenStorage.removeToken() else {
@@ -195,12 +218,16 @@ private extension ProfileViewController {
         self.imageView.image = UIImage(named: "user_picture")
     }
     
+    func resetPhotos() {
+        ImagesListService.shared.resetPhotos()
+    }
+    
     func cleanCookies() {
-      HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-      WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-        records.forEach { record in
-          WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record]) { }
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record]) { }
+            }
         }
-      }
     }
 }
