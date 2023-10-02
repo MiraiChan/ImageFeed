@@ -37,6 +37,8 @@ final class ImagesListCell: UITableViewCell {
     }
     
     func loadCell(from photo: Photo) -> Bool {
+        setGradientBackground()
+        
         var status = false
         
         if let photoDate = photo.createdAt {
