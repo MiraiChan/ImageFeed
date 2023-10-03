@@ -14,6 +14,7 @@ final class ImagesListService {
     private let session = URLSession.shared
     private let requestBuilder = URLRequestBuilder.shared
     private let imagesPerPage = 10
+    private let dateFormatter = ISO8601DateFormatter()
     
     private var currentTask: URLSessionTask?
     private var lastLoadedPage: Int?
@@ -42,10 +43,11 @@ final class ImagesListService {
         let thumbWidth = 200.0
         let aspectRatio = Double(photoResult.width) / Double(photoResult.height)
         let thumbHeight = thumbWidth / aspectRatio
+        let date = photoResult.createdAt.flatMap { dateFormatter.date(from: $0) }
         return Photo(
             id: photoResult.id,
             size: CGSize(width: Double(photoResult.width), height: Double(photoResult.height)),
-            createdAt: ISO8601DateFormatter().date(from: photoResult.createdAt ?? ""),
+            createdAt: date,
             welcomeDescription: photoResult.description,
             thumbImageURL: photoResult.urls.small,
             largeImageURL: photoResult.urls.full,

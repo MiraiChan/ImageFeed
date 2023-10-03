@@ -19,9 +19,9 @@ let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
 
 //MARK: - DateFormatter
 
-let dateFormatter: DateFormatter = {
-  let dateFormatter = DateFormatter()
-  dateFormatter.dateFormat = "d MMMM YYYY"
-  return dateFormatter
-} ()
+let longDateFormatter: DateFormatter = {
+    let df = DateFormatter()
+    df.dateFormat = "d MMMM YYYY"
+    return df
+}()
 

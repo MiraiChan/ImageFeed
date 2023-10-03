@@ -42,7 +42,9 @@ final class ImagesListCell: UITableViewCell {
         var status = false
         
         if let photoDate = photo.createdAt {
-            dateLabel.text = dateFormatter.string(from: photoDate)
+            dateLabel.text = longDateFormatter.string(from: photoDate)
+        } else {
+            dateLabel.text = ""
         }
         
         setIsLiked(photo.isLiked)
