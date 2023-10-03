@@ -186,6 +186,7 @@
 				01FBCAAC2A7EE8F300F9A80C /* Base */,
 				01FBCAAD2A7EE9F700F9A80C /* Resources */,
 				012DEBCF2A72F78E0014551E /* ImageFeed.xcdatamodeld */,
+				012DEBD72A72F78F0014551E /* Info.plist */,
 			);
 			path = ImageFeed;
 			sourceTree = "<group>";
@@ -358,7 +359,6 @@
 			isa = PBXGroup;
 			children = (
 				012DEBD22A72F78F0014551E /* Assets.xcassets */,
-				012DEBD72A72F78F0014551E /* Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
