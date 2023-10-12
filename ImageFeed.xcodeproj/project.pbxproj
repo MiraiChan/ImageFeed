@@ -33,6 +33,7 @@
 		0133CEB12ABFFA7600D50B82 /* ProfileStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CEB02ABFFA7600D50B82 /* ProfileStructures.swift */; };
 		0133CEB32AC4C90400D50B82 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CEB22AC4C90400D50B82 /* ImagesListService.swift */; };
 		0133CEB52AC4D54B00D50B82 /* PhotoStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CEB42AC4D54B00D50B82 /* PhotoStructures.swift */; };
+		0133CED02AD81F8700D50B82 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CECF2AD81F8700D50B82 /* WebViewPresenter.swift */; };
 		013CBEED2A9895B900037D3E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013CBEEC2A9895B900037D3E /* Constants.swift */; };
 		013CBEF02A9F32E100037D3E /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013CBEEF2A9F32E100037D3E /* AuthViewController.swift */; };
 		013CBEF22A9F34D400037D3E /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013CBEF12A9F34D400037D3E /* WebViewViewController.swift */; };
@@ -92,6 +93,7 @@
 		0133CEB02ABFFA7600D50B82 /* ProfileStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStructures.swift; sourceTree = "<group>"; };
 		0133CEB22AC4C90400D50B82 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		0133CEB42AC4D54B00D50B82 /* PhotoStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStructures.swift; sourceTree = "<group>"; };
+		0133CECF2AD81F8700D50B82 /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		013CBEEC2A9895B900037D3E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		013CBEEF2A9F32E100037D3E /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		013CBEF12A9F34D400037D3E /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				013CBEEF2A9F32E100037D3E /* AuthViewController.swift */,
 				013CBEF12A9F34D400037D3E /* WebViewViewController.swift */,
 				0118AFBF2ABEE2B800417417 /* RootNavigationController.swift */,
+				0133CECF2AD81F8700D50B82 /* WebViewPresenter.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -514,6 +517,7 @@
 				012DEBD12A72F78E0014551E /* ImageFeed.xcdatamodeld in Sources */,
 				013CBEFC2AA6863200037D3E /* SplashViewController.swift in Sources */,
 				013CBEFF2AA754BF00037D3E /* URLRequestExtension.swift in Sources */,
+				0133CED02AD81F8700D50B82 /* WebViewPresenter.swift in Sources */,
 				013CBEF42AA5D25700037D3E /* OAuthTokenResponseBody.swift in Sources */,
 				0118AFB72ABBA5B100417417 /* UIColorExtension.swift in Sources */,
 				013CBF012AA7550200037D3E /* URLSessionExtension.swift in Sources */,

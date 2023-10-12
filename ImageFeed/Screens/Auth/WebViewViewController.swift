@@ -13,7 +13,11 @@ protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
-final class WebViewViewController: UIViewController {
+public protocol WebViewViewControllerProtocol: AnyObject {
+  var presenter: WebViewPresenterProtocol? { get set }
+}
+
+final class WebViewViewController: UIViewController & WebViewViewControllerProtocol {
     
     // MARK: - IBOutlets
     
@@ -23,6 +27,7 @@ final class WebViewViewController: UIViewController {
     // MARK: - Public properties
     
     weak var delegate: WebViewViewControllerDelegate?
+    var presenter: WebViewPresenterProtocol?
     private var estimatedProgressObservation: NSKeyValueObservation?
     
     // MARK: - Lifecycle
