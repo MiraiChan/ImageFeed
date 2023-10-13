@@ -15,6 +15,7 @@ protocol WebViewViewControllerDelegate: AnyObject {
 
 public protocol WebViewViewControllerProtocol: AnyObject {
   var presenter: WebViewPresenterProtocol? { get set }
+  func load(request: URLRequest)
 }
 
 final class WebViewViewController: UIViewController & WebViewViewControllerProtocol {
@@ -36,7 +37,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         super.viewDidLoad()
         
         webView.navigationDelegate = self
-        webViewLoading()
+        presenter?.viewDidLoad()
         progressObservation()
         updateProgress()
     }
@@ -54,26 +55,11 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
         progressView.isHidden = fabs(webView.estimatedProgress - 1.0) <= 0.0001
     }
     
-    private func webViewLoading () {
-        
-        //Url
-        guard var urlComponents = URLComponents(string: unsplashAuthorizeURLString)
-        else {
-            fatalError("Incorrect base URL")
-        }
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: accessKey),
-            URLQueryItem(name: "redirect_uri", value: redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: accessScope)
-        ]
-        guard let url = urlComponents.url else {
-            fatalError("Unable to build URL")
-        }
-        
-        //URLRequest
-        let request = URLRequest(url: url)
+    func load(request: URLRequest) {
         webView.load(request)
+    }
+    
+    //private func webViewLoading () {
     }
     
     private func progressObservation() {
@@ -82,7 +68,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
             self.updateProgress()
         })
     }
-}
+
 // MARK: - WKNavigationDelegate
 extension WebViewViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
