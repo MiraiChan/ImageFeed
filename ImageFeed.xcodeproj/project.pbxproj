@@ -35,6 +35,7 @@
 		0133CEB52AC4D54B00D50B82 /* PhotoStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CEB42AC4D54B00D50B82 /* PhotoStructures.swift */; };
 		0133CED02AD81F8700D50B82 /* WebViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CECF2AD81F8700D50B82 /* WebViewPresenter.swift */; };
 		0133CED22AD9EE2A00D50B82 /* AuthConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CED12AD9EE2A00D50B82 /* AuthConfiguration.swift */; };
+		0133CED42AD9F2EE00D50B82 /* AuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CED32AD9F2EE00D50B82 /* AuthHelper.swift */; };
 		013CBEED2A9895B900037D3E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013CBEEC2A9895B900037D3E /* Constants.swift */; };
 		013CBEF02A9F32E100037D3E /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013CBEEF2A9F32E100037D3E /* AuthViewController.swift */; };
 		013CBEF22A9F34D400037D3E /* WebViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013CBEF12A9F34D400037D3E /* WebViewViewController.swift */; };
@@ -96,6 +97,7 @@
 		0133CEB42AC4D54B00D50B82 /* PhotoStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStructures.swift; sourceTree = "<group>"; };
 		0133CECF2AD81F8700D50B82 /* WebViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewPresenter.swift; sourceTree = "<group>"; };
 		0133CED12AD9EE2A00D50B82 /* AuthConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthConfiguration.swift; sourceTree = "<group>"; };
+		0133CED32AD9F2EE00D50B82 /* AuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthHelper.swift; sourceTree = "<group>"; };
 		013CBEEC2A9895B900037D3E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		013CBEEF2A9F32E100037D3E /* AuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		013CBEF12A9F34D400037D3E /* WebViewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewViewController.swift; sourceTree = "<group>"; };
@@ -324,6 +326,7 @@
 				0118AFB62ABBA5B000417417 /* UIColorExtension.swift */,
 				0118AFBD2ABEC28500417417 /* NotificationExtensions.swift */,
 				0133CEAE2ABF697F00D50B82 /* SnakeCaseJSONDecoder.swift */,
+				0133CED32AD9F2EE00D50B82 /* AuthHelper.swift */,
 			);
 			path = AnyHelps;
 			sourceTree = "<group>";
@@ -539,6 +542,7 @@
 				0118AFBE2ABEC28500417417 /* NotificationExtensions.swift in Sources */,
 				0133CEAF2ABF697F00D50B82 /* SnakeCaseJSONDecoder.swift in Sources */,
 				0133CEB32AC4C90400D50B82 /* ImagesListService.swift in Sources */,
+				0133CED42AD9F2EE00D50B82 /* AuthHelper.swift in Sources */,
 				0133CEB12ABFFA7600D50B82 /* ProfileStructures.swift in Sources */,
 				0118AFA22AB1E77E00417417 /* UIBlockingProgressHUD.swift in Sources */,
 			);
