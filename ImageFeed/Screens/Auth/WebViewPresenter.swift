@@ -35,7 +35,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: Constants.accessScope)
         ]
-        guard let url = urlComponents.url else {
+        guard urlComponents.url != nil else {
             fatalError("Unable to build URL")
         }
         
