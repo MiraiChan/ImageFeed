@@ -3,11 +3,17 @@
 //  ImageFeed
 //
 //  Created by Almira Khafizova on 15.08.23.
-//
 
+
+import Foundation
 import UIKit
 import Kingfisher
-import WebKit
+
+protocol ProfileViewControllerProtocol {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar(url: URL)
+    func loadProfile(_ profile: Profile?)
+}
 
 final class ProfileViewController: UIViewController {
     private var label1: UILabel!
@@ -16,29 +22,25 @@ final class ProfileViewController: UIViewController {
     private let imageView = UIImageView()
     private var logoutButton: UIButton!
     
-    private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    
     private let profileService = ProfileService.shared
-    private let profileImageService = ProfileImageService.shared
+    //private let profileImageService = ProfileImageService.shared
     private var alertPresenter: AlertPresenting?
     private var profileImageServiceObserver: NSObjectProtocol?
+    
+    var presenter: ProfilePresenterProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
         alertPresenter = AlertPresenter(viewController: self)
-        
-        checkAvatar()
+        presenter?.viewDidLoad()
         
         updateProfileDetails(profile: profileService.profile)
         
         setupImageView()
         setupLabel()
         setupButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadProfile()
     }
 }
 
@@ -58,24 +60,6 @@ private extension ProfileViewController {
         updateAvatar(url: url)
     }
     
-    func checkAvatar() {
-        if let url = profileImageService.avatarURL{
-            updateAvatar(url: url)
-        }
-    }
-    
-    func updateAvatar(url: URL) {
-        let cache = ImageCache.default
-        cache.clearMemoryCache()
-        cache.clearDiskCache()
-        
-        let processor = RoundCornerImageProcessor(cornerRadius: 61)
-        imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: url,
-                              placeholder: UIImage(named: "user_picture"),
-                              options: [.processor(processor)])
-    }
-    
     func updateProfileDetails(profile: Profile?) {
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification,
@@ -88,18 +72,6 @@ private extension ProfileViewController {
         )
     }
     
-    func loadProfile() {
-        if let profile = profileService.profile {
-            label1.text = profile.name
-            label2.text = profile.loginName
-            label3.text = profile.bio
-        } else {
-            label1.text = "Error"
-            label2.text = "Error"
-            label3.text = "Error"
-        }
-    }
-    
     func showAlert() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -107,19 +79,12 @@ private extension ProfileViewController {
                 title: "Пока, пока!",
                 message: "Уверены, что хотите выйти?",
                 buttonText: "Да",
-                completion: { self.resetAccount() },
+                completion: { self.presenter?.resetAccount() },
                 secondButtonText: "Нет",
                 secondCompletion: { self.dismiss(animated: true) }
             )
             self.alertPresenter?.showAlert(for: alertModel)
         }
-    }
-    
-    func switchToSplashViewController() {
-        
-        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
-        let splashViewController = SplashViewController()
-        window.rootViewController = splashViewController
     }
     
     private func setupImageView() {
@@ -193,41 +158,29 @@ private extension ProfileViewController {
         logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
     }
 }
-
-private extension ProfileViewController {
-    
-    func resetAccount() {
-        resetToken()
-        resetView()
-        resetPhotos()
-        cleanCookies()
-        switchToSplashViewController()
-    }
-    
-    func resetToken() {
-        guard oauth2TokenStorage.removeToken() else {
-            assertionFailure("Cannot remove token")
-            return
+extension ProfileViewController: ProfileViewControllerProtocol {
+    func loadProfile(_ profile: Profile?) {
+        if let profile = profileService.profile {
+            label1.text = profile.name
+            label2.text = profile.loginName
+            label3.text = profile.bio
+        } else {
+            label1.text = "Error. User's name not found."
+            label2.text = "Error"
+            label3.text = "Error"
+            imageView.image = UIImage(named: "user_picture")
         }
     }
     
-    func resetView() {
-        self.label1.text = "User's name"
-        self.label2.text = ""
-        self.label3.text = ""
-        self.imageView.image = UIImage(named: "user_picture")
-    }
-    
-    func resetPhotos() {
-        ImagesListService.shared.resetPhotos()
-    }
-    
-    func cleanCookies() {
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record]) { }
-            }
-        }
+    func updateAvatar(url: URL) {
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: url,
+                              placeholder: UIImage(named: "user_picture"),
+                              options: [.processor(processor)])
     }
 }
