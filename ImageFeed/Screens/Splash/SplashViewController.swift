@@ -132,11 +132,12 @@ private extension SplashViewController {
             case .success(let profile):
                 let userName = profile.username
                 self.fetchProfileImage(userName: userName)
-                self.switchToTabBarController()
-                completion()
+//                self.switchToTabBarController()
+//                completion()
             case .failure(let error):
                 self.showLoginAlert(error: error, cb: completion)
             }
+            completion()
         }
     }
     
@@ -147,8 +148,8 @@ private extension SplashViewController {
             guard let self else { return }
             
             switch profileImageUrl {
-            case .success(let mediumPhoto):
-                print("\(mediumPhoto)")
+            case .success:
+                self.switchToTabBarController()
             case .failure(let error):
                 self.showLoginAlert(error: error)
             }

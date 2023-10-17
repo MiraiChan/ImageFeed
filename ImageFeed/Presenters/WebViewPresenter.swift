@@ -24,22 +24,6 @@ final class WebViewPresenter: WebViewPresenterProtocol {
        }
     
     func viewDidLoad() {
-        //Url
-        guard var urlComponents = URLComponents(string: Constants.unsplashAuthorizeURLString)
-        else {
-            fatalError("Incorrect base URL")
-        }
-        urlComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: Constants.accessKey),
-            URLQueryItem(name: "redirect_uri", value: Constants.redirectURI),
-            URLQueryItem(name: "response_type", value: "code"),
-            URLQueryItem(name: "scope", value: Constants.accessScope)
-        ]
-        guard urlComponents.url != nil else {
-            fatalError("Unable to build URL")
-        }
-        
-        //URLRequest
         let request = authHelper.authRequest()
         
         didUpdateProgressValue(0)
@@ -62,5 +46,4 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     func code(from url: URL) -> String? {
         authHelper.code(from: url)
     }
-    
 }

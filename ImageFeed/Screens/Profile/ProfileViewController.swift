@@ -5,18 +5,17 @@
 //  Created by Almira Khafizova on 15.08.23.
 
 
-import Foundation
 import UIKit
 import Kingfisher
 
-protocol ProfileViewControllerProtocol {
+public protocol ProfileViewControllerProtocol: AnyObject {
     var presenter: ProfilePresenterProtocol? { get set }
     func updateAvatar(url: URL)
     func loadProfile(_ profile: Profile?)
 }
 
 final class ProfileViewController: UIViewController {
-    private var label1: UILabel!
+    private var label1 = UILabel()
     private var label2 = UILabel()
     private var label3 = UILabel()
     private let imageView = UIImageView()
@@ -24,11 +23,12 @@ final class ProfileViewController: UIViewController {
     
     
     private let profileService = ProfileService.shared
-    //private let profileImageService = ProfileImageService.shared
+    private let profileImageService = ProfileImageService.shared
     private var alertPresenter: AlertPresenting?
     private var profileImageServiceObserver: NSObjectProtocol?
     
     var presenter: ProfilePresenterProtocol?
+    let profileImagePlaceholder = UIImage(named: "user_picture")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +36,7 @@ final class ProfileViewController: UIViewController {
         alertPresenter = AlertPresenter(viewController: self)
         presenter?.viewDidLoad()
         
-        updateProfileDetails(profile: profileService.profile)
+        NotificationObserver()
         
         setupImageView()
         setupLabel()
@@ -60,7 +60,7 @@ private extension ProfileViewController {
         updateAvatar(url: url)
     }
     
-    func updateProfileDetails(profile: Profile?) {
+    func NotificationObserver() {
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification,
             object: nil,
@@ -88,11 +88,12 @@ private extension ProfileViewController {
     }
     
     private func setupImageView() {
-        let profileImage = UIImage(named: "user_picture")
-        imageView.image = profileImage
+        imageView.image = profileImagePlaceholder
         imageView.tintColor = .gray
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
+        
         imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
@@ -100,9 +101,7 @@ private extension ProfileViewController {
     }
     
     private func setupLabel() {
-        let label1 = UILabel()
-        label1.text = "Екатерина Новикова"
-        label1.textColor = UIColor(named: "YP White")
+        label1.textColor = .ypWhite
         let font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 18 / font.pointSize
@@ -116,11 +115,8 @@ private extension ProfileViewController {
         view.addSubview(label1)
         label1.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         label1.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
-        self.label1 = label1
         
-        let label2 = UILabel()
-        label2.text = "@ekaterina_nov"
-        label2.textColor = UIColor(named: "YP Gray")
+        label2.textColor = .ypGray
         let font2 = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
         let attributes2: [NSAttributedString.Key: Any] = [
             .font: font2,
@@ -131,18 +127,14 @@ private extension ProfileViewController {
         view.addSubview(label2)
         label2.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
         label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 20).isActive = true
-        self.label2 = label2
         
-        let label3 = UILabel()
-        label3.text = "Hello, world!"
-        label3.textColor = UIColor(named: "YP White")
+        label3.textColor = .ypWhite
         let font3 = UIFont.systemFont(ofSize: 13, weight: .regular)
         label3.font = font3
         label3.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(label3)
         label3.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
         label3.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 20).isActive = true
-        self.label3 = label3
     }
     
     private func setupButton() {
@@ -159,6 +151,7 @@ private extension ProfileViewController {
     }
 }
 extension ProfileViewController: ProfileViewControllerProtocol {
+    
     func loadProfile(_ profile: Profile?) {
         if let profile = profileService.profile {
             label1.text = profile.name
@@ -168,7 +161,7 @@ extension ProfileViewController: ProfileViewControllerProtocol {
             label1.text = "Error. User's name not found."
             label2.text = "Error"
             label3.text = "Error"
-            imageView.image = UIImage(named: "user_picture")
+            imageView.image = profileImagePlaceholder
         }
     }
     

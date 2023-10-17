@@ -33,6 +33,7 @@ private extension ProfileService {
 extension ProfileService {
     func fetchProfile(completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
+        if fetchProfileTask != nil { return }
         fetchProfileTask?.cancel()
         
         guard let request = makeProfileRequest() else {
@@ -42,7 +43,7 @@ extension ProfileService {
         }
         
         let session = URLSession.shared
-        fetchProfileTask = session.objectTask(for: request) {
+        let task = session.objectTask(for: request) {
             [weak self] (result: Result<ProfileResult, Error>) in
             guard let self else { preconditionFailure("Cannot make weak link") }
             
@@ -56,6 +57,8 @@ extension ProfileService {
                 completion(.failure(ProfileError.decodingFailed))
             }
         }
+        self.fetchProfileTask = task
+        task.resume()
     }
 }
 

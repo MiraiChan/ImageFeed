@@ -6,19 +6,18 @@
 //
 
 import Foundation
-import UIKit
 import WebKit
 import Kingfisher
 
 
-protocol ProfilePresenterProtocol: AnyObject {
+public protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
     func viewDidLoad()
     func resetAccount()
 }
 
 final class ProfilePresenter {
-    var view: ProfileViewControllerProtocol?
+    weak var view: ProfileViewControllerProtocol?
     
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared

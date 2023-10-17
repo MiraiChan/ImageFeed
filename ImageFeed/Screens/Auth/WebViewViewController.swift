@@ -51,6 +51,13 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     
     // MARK: - Private methods
     
+    func setupProgress() {
+       progressView.progressTintColor = .ypBlack
+       progressView.trackTintColor = .ypGray
+       progressView.progressViewStyle = .bar
+       progressView.setProgress(0, animated: true)
+     }
+    
     func setProgressValue(_ newValue: Float) {
         progressView.progress = newValue
     }
@@ -69,8 +76,7 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
             self.presenter?.didUpdateProgressValue(webView.estimatedProgress)
         })
     }
-    //private func webViewLoading () {
-    }
+}
 
 
 // MARK: - WKNavigationDelegate

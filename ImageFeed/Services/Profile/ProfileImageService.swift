@@ -33,6 +33,7 @@ extension ProfileImageService {
     
     func fetchProfileImageURL(userName: String, completion: @escaping (Result<String, Error>) -> Void) {
         assert(Thread.isMainThread)
+        if task != nil { return }
         task?.cancel()
         
         guard let request = makeRequest(userName: userName) else {
@@ -44,6 +45,9 @@ extension ProfileImageService {
         let dataTask = urlSession.objectTask(for: request) {
             [weak self] (result: Result<ProfileResult, Error>) in
             guard let self else { preconditionFailure("Cannot make weak link") }
+            
+            self.task = nil
+            
             switch result {
             case .success(let profileResult):
                 guard let mediumPhoto = profileResult.profileImage?.medium else { return }
