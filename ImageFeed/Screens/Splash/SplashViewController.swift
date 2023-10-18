@@ -59,7 +59,7 @@ private extension SplashViewController {
                 buttonText: "Ok") {
                     self.wasChecked = false
                     guard OAuth2TokenStorage.shared.removeToken() else {
-                        assertionFailure("Cannot remove token")
+                        assertionFailure("Failed to remove token")
                         return
                     }
                     self.authStatusChecker()
@@ -109,7 +109,7 @@ private extension SplashViewController {
         UIBlockingProgressHUD.show()
         
         oauth2Service.fetchAuthToken(code) { [weak self] result in
-            guard let self else { preconditionFailure("Cannot fetch auth token") }
+            guard let self else { preconditionFailure("Failed to fetch Auth token") }
             switch result {
             case .success(_):
                 self.fetchProfile(completion: {
@@ -126,7 +126,7 @@ private extension SplashViewController {
         UIBlockingProgressHUD.show()
         
         profileService.fetchProfile { [weak self] result in
-            guard let self else { preconditionFailure("Cannot fetch Profile result") }
+            guard let self else { preconditionFailure("Failed to fetch Profile result") }
             
             switch result {
             case .success(let profile):

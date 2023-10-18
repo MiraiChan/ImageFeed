@@ -52,7 +52,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
     }
     func resetToken() {
         guard oauth2TokenStorage.removeToken() else {
-            assertionFailure("Cannot remove token")
+            assertionFailure("Failed remove token")
             return
         }
     }

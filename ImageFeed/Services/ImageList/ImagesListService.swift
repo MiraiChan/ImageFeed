@@ -119,7 +119,7 @@ final class ImagesListService {
         }
         
         let task = session.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
-            guard let self else { preconditionFailure("Cannot make weak link") }
+            guard let self else { preconditionFailure("Failed to establish a weak reference") }
             switch result {
             case .success(let photoResults):
                 DispatchQueue.main.async {

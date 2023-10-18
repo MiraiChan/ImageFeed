@@ -44,7 +44,7 @@ extension ProfileImageService {
         
         let dataTask = urlSession.objectTask(for: request) {
             [weak self] (result: Result<ProfileResult, Error>) in
-            guard let self else { preconditionFailure("Cannot make weak link") }
+            guard let self else { preconditionFailure("Failed to establish a weak reference") }
             
             self.task = nil
             
