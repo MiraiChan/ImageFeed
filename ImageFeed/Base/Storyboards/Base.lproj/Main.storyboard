@@ -276,6 +276,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ze6-FL-xnp"/>
+                    <connections>
+                        <outlet property="authButton" destination="EKM-gZ-E6t" id="JoU-5B-OKT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QBR-hs-Kkg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
