@@ -9,16 +9,14 @@ import UIKit
 
 
 public protocol ImagesListViewControllerProtocol: AnyObject {
-  var presenter: ImagesListPresenterProtocol { get set }
-  var tableView: UITableView! { get set }
-  func setupTableView()
+    var presenter: ImagesListPresenterProtocol { get set }
+    var tableView: UITableView! { get set }
+    func setupTableView()
 }
 
 final class ImagesListViewController: UIViewController {
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
-    //private var photos: [Photo] = []
     
-    //private var imagesListService = ImagesListService.shared
     private var imagesListServiceObserver: NSObjectProtocol?
     var presenter = ImagesListPresenter() as ImagesListPresenterProtocol
     
@@ -30,7 +28,6 @@ final class ImagesListViewController: UIViewController {
         
         presenter.viewDidLoad()
         
-        //setupImageListService()
         setupNotificationObserver()
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -61,11 +58,6 @@ extension ImagesListViewController: ImagesListViewControllerProtocol {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
-//    func setupImageListService() {
-//        imagesListService.fetchPhotosNextPage()
-//        updateTableViewAnimated()
-//    }
-    
     func setupNotificationObserver() {
         imagesListServiceObserver = NotificationCenter.default
             .addObserver(
@@ -77,21 +69,6 @@ extension ImagesListViewController: ImagesListViewControllerProtocol {
             }
         presenter.updateTableViewAnimated()
     }
-    
-//    func updateTableViewAnimated() {
-//        let oldCount = photos.count
-//        photos = imagesListService.photos
-//        let newCount = photos.count
-//
-//        if oldCount != newCount {
-//            tableView.performBatchUpdates {
-//                let indexes = (oldCount..<newCount).map { index in
-//                    IndexPath(row: index, section: 0)
-//                }
-//                tableView.insertRows(at: indexes, with: .automatic)
-//            }
-//        }
-//    }
 }
 
 extension ImagesListViewController: UITableViewDelegate {
@@ -103,7 +80,7 @@ extension ImagesListViewController: UITableViewDelegate {
 
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.photosTotalCount
+        presenter.totalNumberOfPhotos
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -115,8 +92,8 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         cell.delegate = self
         guard let photo = presenter.getPhotoStructure(indexPath: indexPath) else {
-             preconditionFailure("Failed to retrieve photo from the array")
-           }
+            preconditionFailure("Failed to retrieve photo from the array")
+        }
         if cell.loadCell(from: photo) {
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
@@ -124,21 +101,12 @@ extension ImagesListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        presenter.calculateHeight(indexPath: IndexPath)
-//        let thumbImageSize = photos[indexPath.row].thumbSize
-//        let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-//        let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
-//        let imageWidth = thumbImageSize.width
-//        let scale = imageViewWidth / imageWidth
-//        let cellHeight = thumbImageSize.height * scale + imageInsets.top + imageInsets.bottom
-//        return cellHeight
+        presenter.calculateHeight(indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let visibleRows = tableView.indexPathsForVisibleRows, indexPath == visibleRows.last {
-          presenter.photosPerPageChecker(indexPath: indexPath)
-//        if indexPath.row + 1 == photos.count {
-//            imagesListService.fetchPhotosNextPage()
+            presenter.photosPerPageChecker(indexPath: indexPath)
         }
     }
 }
@@ -147,20 +115,6 @@ extension ImagesListViewController: ImagesListCellDelegate {
     func imagesListCellDidTapLike(_ cell: ImagesListCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         presenter.imagesListCellDidTapLike(cell, indexPath: indexPath)
-//        let photo = photos[indexPath.row]
-//        UIBlockingProgressHUD.show()
-//        imagesListService.changeLike(photoId: photo.id, isLike: !photo.isLiked) { [weak self ] result in
-//            guard let self else { return }
-//            switch result {
-//            case .success(let isLiked):
-//                self.photos[indexPath.row].isLiked = isLiked
-//                cell.setIsLiked(isLiked)
-//                UIBlockingProgressHUD.dismiss()
-//            case .failure(let error):
-//                UIBlockingProgressHUD.dismiss()
-//                print("\(error.localizedDescription)")
-//                //alert
-//            }
-//        }
     }
 }
+

@@ -25,10 +25,13 @@ final class TabBarController: UITabBarController {
         view.backgroundColor = .ypBackground
         
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
+        let imagesListPresenter = ImagesListPresenter()
         let imagesListViewController = storyboard.instantiateViewController(
             withIdentifier: "ImagesListViewController"
         )
         guard let imagesListViewController = imagesListViewController as? ImagesListViewController else { return }
+        imagesListPresenter.view = imagesListViewController
+        imagesListViewController.presenter = imagesListPresenter
         
         let profilePresenter = ProfilePresenter()
         let profileViewController = ProfileViewController()

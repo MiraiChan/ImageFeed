@@ -11,7 +11,7 @@ protocol ImagesListCellDelegate: AnyObject {
     func imagesListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-final class ImagesListCell: UITableViewCell {
+public final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
     private let placeholderImage = UIImage(named: "stub")
@@ -22,7 +22,7 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var gradientView: UIView!
     
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
     }

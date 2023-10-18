@@ -54,6 +54,8 @@
 		015B57C52ADC6A1800B9E485 /* ProfileViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0133CEE22ADBD5A800D50B82 /* ProfileViewControllerTests.swift */; };
 		015B57C62ADC6A5B00B9E485 /* ProfilePresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0154DCE12ADC591C00F0B88A /* ProfilePresenterTests.swift */; };
 		015B57CB2ADF18E400B9E485 /* ImagesListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015B57CA2ADF18E400B9E485 /* ImagesListPresenter.swift */; };
+		015B57CD2AE07E1F00B9E485 /* ImagesListPresenterSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015B57CC2AE07E1F00B9E485 /* ImagesListPresenterSpy.swift */; };
+		015B57CF2AE0891E00B9E485 /* ImagesListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015B57CE2AE0891E00B9E485 /* ImagesListTests.swift */; };
 		019245372A8C18BA00AC0741 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019245362A8C18BA00AC0741 /* SingleImageViewController.swift */; };
 		01FBCAAA2A7CF7F300F9A80C /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FBCAA92A7CF7F300F9A80C /* ImagesListCell.swift */; };
 /* End PBXBuildFile section */
@@ -123,6 +125,8 @@
 		0154DCE12ADC591C00F0B88A /* ProfilePresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenterTests.swift; sourceTree = "<group>"; };
 		015B57B72ADC69FD00B9E485 /* ImageFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		015B57CA2ADF18E400B9E485 /* ImagesListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenter.swift; sourceTree = "<group>"; };
+		015B57CC2AE07E1F00B9E485 /* ImagesListPresenterSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListPresenterSpy.swift; sourceTree = "<group>"; };
+		015B57CE2AE0891E00B9E485 /* ImagesListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListTests.swift; sourceTree = "<group>"; };
 		019245332A8B66C700AC0741 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		019245362A8C18BA00AC0741 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		01FBCAA92A7CF7F300F9A80C /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
@@ -356,6 +360,7 @@
 				0133CED72ADA674A00D50B82 /* WebViewViewControllerSpy.swift */,
 				0133CEDE2ADBC94700D50B82 /* ProfilePresenterSpy.swift */,
 				0133CEE02ADBCB9600D50B82 /* ProfileViewControllerSpy.swift */,
+				015B57CC2AE07E1F00B9E485 /* ImagesListPresenterSpy.swift */,
 			);
 			path = Spies;
 			sourceTree = "<group>";
@@ -366,6 +371,7 @@
 				012DEBE02A72F7900014551E /* WebViewTests.swift */,
 				0133CEE22ADBD5A800D50B82 /* ProfileViewControllerTests.swift */,
 				0154DCE12ADC591C00F0B88A /* ProfilePresenterTests.swift */,
+				015B57CE2AE0891E00B9E485 /* ImagesListTests.swift */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -614,8 +620,10 @@
 				015B57C42ADC6A1600B9E485 /* WebViewTests.swift in Sources */,
 				015B57C22ADC6A1000B9E485 /* ProfilePresenterSpy.swift in Sources */,
 				015B57C52ADC6A1800B9E485 /* ProfileViewControllerTests.swift in Sources */,
+				015B57CF2AE0891E00B9E485 /* ImagesListTests.swift in Sources */,
 				015B57C12ADC6A0D00B9E485 /* WebViewViewControllerSpy.swift in Sources */,
 				015B57C62ADC6A5B00B9E485 /* ProfilePresenterTests.swift in Sources */,
+				015B57CD2AE07E1F00B9E485 /* ImagesListPresenterSpy.swift in Sources */,
 				015B57C02ADC6A0A00B9E485 /* WebViewPresenterSpy.swift in Sources */,
 				015B57C32ADC6A1300B9E485 /* ProfileViewControllerSpy.swift in Sources */,
 			);
