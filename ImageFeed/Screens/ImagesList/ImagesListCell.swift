@@ -46,6 +46,7 @@ public final class ImagesListCell: UITableViewCell {
         } else {
             dateLabel.text = ""
         }
+        likeButton.accessibilityIdentifier = "LikeButton"
         
         setIsLiked(photo.isLiked)
         

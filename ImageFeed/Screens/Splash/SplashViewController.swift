@@ -14,7 +14,7 @@ final class SplashViewController: UIViewController {
     private let oauth2Service = OAuth2Service.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private var alertPresenter: AlertPresenting?
+    private var alertPresenter: AlertPresenterProtocol?
     private var wasChecked = false
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

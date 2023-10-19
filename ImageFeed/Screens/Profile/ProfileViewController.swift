@@ -24,7 +24,7 @@ final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private var alertPresenter: AlertPresenting?
+    private var alertPresenter: AlertPresenterProtocol?
     private var profileImageServiceObserver: NSObjectProtocol?
     
     var presenter: ProfilePresenterProtocol?
@@ -91,6 +91,8 @@ private extension ProfileViewController {
         imageView.image = profileImagePlaceholder
         imageView.tintColor = .gray
         
+        imageView.accessibilityIdentifier = "ProfilePhoto"
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(imageView)
         
@@ -101,6 +103,8 @@ private extension ProfileViewController {
     }
     
     private func setupLabel() {
+        
+        label1.accessibilityIdentifier = "ProfileName"
         label1.textColor = .ypWhite
         let font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         let paragraphStyle = NSMutableParagraphStyle()
@@ -116,6 +120,7 @@ private extension ProfileViewController {
         label1.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
         label1.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
         
+        label2.accessibilityIdentifier = "ProfileLogin"
         label2.textColor = .ypGray
         let font2 = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
         let attributes2: [NSAttributedString.Key: Any] = [
@@ -128,6 +133,7 @@ private extension ProfileViewController {
         label2.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
         label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 20).isActive = true
         
+        label3.accessibilityIdentifier = "ProfileBio"
         label3.textColor = .ypWhite
         let font3 = UIFont.systemFont(ofSize: 13, weight: .regular)
         label3.font = font3
@@ -143,6 +149,9 @@ private extension ProfileViewController {
             target: self,
             action: #selector(self.didTapButton)
         )
+        
+        logoutButton.accessibilityIdentifier = "LogoutButton"
+        
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)

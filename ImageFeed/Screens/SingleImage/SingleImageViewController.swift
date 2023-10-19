@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 final class SingleImageViewController: UIViewController {
-    private var alertPresenter: AlertPresenting?
+    private var alertPresenter: AlertPresenterProtocol?
     
     var image: UIImage! {
         didSet {
@@ -29,6 +29,9 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        backButton.accessibilityIdentifier = "BackButton"
+        
         view.backgroundColor = .ypBlack
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
