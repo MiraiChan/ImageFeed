@@ -70,7 +70,7 @@ extension OAuth2Service {
         
         task = urlSession.objectTask (for: request) {
             [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
-            guard let self else { preconditionFailure("Failed to establish a weak reference") }
+            guard let self else { return }
             self.task = nil
             switch result {
             case .success(let body):

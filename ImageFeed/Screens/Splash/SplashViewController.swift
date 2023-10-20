@@ -109,7 +109,7 @@ private extension SplashViewController {
         UIBlockingProgressHUD.show()
         
         oauth2Service.fetchAuthToken(code) { [weak self] result in
-            guard let self else { preconditionFailure("Failed to fetch Auth token") }
+            guard let self else { return }
             switch result {
             case .success(_):
                 self.fetchProfile(completion: {
@@ -126,14 +126,12 @@ private extension SplashViewController {
         UIBlockingProgressHUD.show()
         
         profileService.fetchProfile { [weak self] result in
-            guard let self else { preconditionFailure("Failed to fetch Profile result") }
+            guard let self else { return }
             
             switch result {
             case .success(let profile):
                 let userName = profile.username
                 self.fetchProfileImage(userName: userName)
-//                self.switchToTabBarController()
-//                completion()
             case .failure(let error):
                 self.showLoginAlert(error: error, cb: completion)
             }

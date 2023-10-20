@@ -45,7 +45,7 @@ extension ProfileService {
         let session = URLSession.shared
         let task = session.objectTask(for: request) {
             [weak self] (result: Result<ProfileResult, Error>) in
-            guard let self else { preconditionFailure("Failed to establish a weak reference") }
+            guard let self else { return }
             
             self.fetchProfileTask = nil
             switch result {

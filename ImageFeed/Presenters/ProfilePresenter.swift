@@ -38,34 +38,34 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         switchToSplashViewController()
     }
     
-    func checkAvatar() {
+    private func checkAvatar() {
         if let url = profileImageService.avatarURL {
             view?.updateAvatar(url: url)
         }
     }
     
-    func checkProfile() {
+    private func checkProfile() {
         guard let profile = profileService.profile else {
             return
         }
         view?.loadProfile(profile)
     }
-    func resetToken() {
+    private func resetToken() {
         guard oauth2TokenStorage.removeToken() else {
             assertionFailure("Failed remove token")
             return
         }
     }
     
-    func resetView() {
+    private func resetView() {
         view?.loadProfile(nil)
     }
     
-    func resetPhotos() {
+    private func resetPhotos() {
         ImagesListService.shared.resetPhotos()
     }
     
-    func cleanCookies() {
+    private func cleanCookies() {
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             records.forEach { record in
@@ -74,7 +74,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         }
     }
     
-    func switchToSplashViewController() {
+    private func switchToSplashViewController() {
         
         guard let window = UIApplication.shared.windows.first else {
             preconditionFailure("Invalid Configuration") }

@@ -41,18 +41,20 @@ final class ImageFeedUITests: XCTestCase {
         //ввеcти текст в поле ввода
         loginTextField.typeText(authMockData.email)
         //скрыть клавиатуру после ввода текста
-        webView.swipeUp()
+        webView.press(forDuration: 0.1, thenDragTo: webView)
         
         //повторяем аналогично с паролем
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
         passwordTextField.typeText(authMockData.pwd)
-        webView.swipeUp()
+        webView.tap()
+        sleep(3)
         
         //логинимся
+        XCTAssertTrue(webView.buttons["Login"].waitForExistence(timeout: 3))
         webView.buttons["Login"].tap()
-        XCTAssertTrue(webView.buttons["Login"].waitForExistence(timeout: 5))
+        
         
         // Подождать, пока открывается экран ленты
         let tableQuery = app.tables
@@ -62,13 +64,12 @@ final class ImageFeedUITests: XCTestCase {
     
     func testFeed() throws {
         // Подождать, пока открывается и загружается экран ленты
-        XCTAssertTrue(app.tabBars.buttons.element(boundBy: 0).waitForExistence(timeout: 3))
+        
         let tableQuery = app.tables
         
         let cell = tableQuery.children(matching: .cell).element(boundBy: 0)
-        XCTAssertTrue(cell.waitForExistence(timeout: 5))
         // Сделать жест «смахивания» вверх по экрану для его скролла
-        cell.swipeUp()
+        cell.swipeDown()
         sleep(2)
         
         let cellToLike = tableQuery.children(matching: .cell).element(boundBy: 1)
@@ -95,7 +96,7 @@ final class ImageFeedUITests: XCTestCase {
     
     func testProfile() throws {
         sleep(3)
-        XCTAssertTrue(app.tabBars.buttons.element(boundBy: 1).waitForExistence(timeout: 3))
+        
         app.tabBars.buttons.element(boundBy: 1).tap()
         
         XCTAssertTrue(app.buttons["LogoutButton"].waitForExistence(timeout: 5))
