@@ -32,5 +32,5 @@ extension OAuth2TokenStorage {
 }
 
 extension String {
-    static let tokenKey = "bearerToken"
+    static let tokenKey = AuthConfigConstants.bearerToken
 }
