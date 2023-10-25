@@ -10,38 +10,37 @@ import Foundation
 // MARK: - Struct
 
 public struct Profile {
-  let username: String
-  public let name: String
-  public let loginName: String
-  public let bio: String?
+    let username: String
+    public let name: String
+    public let loginName: String
+    public let bio: String?
 }
 
 struct ProfileImage: Codable {
-  let small: String?
-  let medium: String?
-  let large: String?
+    let small: String?
+    let medium: String?
+    let large: String?
 }
 
-// TODO: Use SnakeCaseJSONDecoder instead of SJONDecoder with CodingKeys enum
 struct ProfileResult: Codable {
-  let username: String
-  let firstName: String?
-  let lastName: String?
-  let bio: String?
-  let profileImage: ProfileImage?
+    let username: String
+    let firstName: String?
+    let lastName: String?
+    let bio: String?
+    let profileImage: ProfileImage?
 }
 
 
 // MARK: - Init for ProfileResult
 
 extension Profile {
-
-  init(result profile: ProfileResult) {
-    self.init(
-      username: profile.username,
-      name: "\(profile.firstName ?? "") \(profile.lastName ?? "")",
-      loginName: "@\(profile.username)",
-      bio: profile.bio ?? "User didn't fill biography box."
-    )
-  }
+    
+    init(result profile: ProfileResult) {
+        self.init(
+            username: profile.username,
+            name: "\(profile.firstName ?? "") \(profile.lastName ?? "")",
+            loginName: "@\(profile.username)",
+            bio: profile.bio ?? "User didn't fill biography box."
+        )
+    }
 }

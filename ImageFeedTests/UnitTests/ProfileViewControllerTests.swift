@@ -29,9 +29,9 @@ final class ProfileViewControllerTests: XCTestCase {
     // then
     XCTAssertTrue(viewController.viewDidLoadProfile)
     
-    XCTAssertEqual(viewController.label1.text, testUser)
-    XCTAssertEqual(viewController.label2.text, testUser)
-    XCTAssertEqual(viewController.label3.text, testUser)
+    XCTAssertEqual(viewController.profileUserNameLabel.text, testUser)
+    XCTAssertEqual(viewController.profileLoginNameLabel.text, testUser)
+    XCTAssertEqual(viewController.profileBioLabel.text, testUser)
   }
 
   func testPresenterCallsUpdateAvatar() {

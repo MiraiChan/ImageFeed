@@ -10,16 +10,16 @@ import Foundation
 @testable import ImageFeed
 
 final class ProfilePresenterSpy: ProfilePresenterProtocol {
-  var view: ProfileViewControllerProtocol?
-
-  var viewDidLoadCalled = false
-  var viewDidResetAccount = false
-
-  func viewDidLoad() {
-    viewDidLoadCalled = true
-  }
-
-  func resetAccount() {
-    viewDidResetAccount = true
-  }
+    var view: ProfileViewControllerProtocol?
+    
+    var viewDidLoadCalled = false
+    var viewDidResetAccount = false
+    
+    func viewDidLoad() {
+        viewDidLoadCalled = true
+    }
+    
+    func resetAccount() {
+        viewDidResetAccount = true
+    }
 }

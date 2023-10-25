@@ -11,25 +11,25 @@ import UIKit.UILabel
 @testable import ImageFeed
 
 final class ProfileViewControllerSpy: ProfileViewControllerProtocol {
-  var presenter: ProfilePresenterProtocol?
-
-  var viewDidUpdateAvatar = false
-  var viewDidLoadProfile = false
-
-  var label1 = UILabel()
-  var label2 = UILabel()
-  var label3 = UILabel()
-
-  func updateAvatar(url: URL) {
-    viewDidUpdateAvatar = true
-  }
-
-  func loadProfile(_ profile: Profile?) {
-    viewDidLoadProfile = true
-    if let profile {
-      label1.text = profile.name
-      label2.text = profile.loginName
-      label3.text = profile.bio
+    var presenter: ProfilePresenterProtocol?
+    
+    var viewDidUpdateAvatar = false
+    var viewDidLoadProfile = false
+    
+    var profileUserNameLabel = UILabel()
+    var profileLoginNameLabel = UILabel()
+    var profileBioLabel = UILabel()
+    
+    func updateAvatar(url: URL) {
+        viewDidUpdateAvatar = true
     }
-  }
+    
+    func loadProfile(_ profile: Profile?) {
+        viewDidLoadProfile = true
+        if let profile {
+            profileUserNameLabel.text = profile.name
+            profileLoginNameLabel.text = profile.loginName
+            profileBioLabel.text = profile.bio
+        }
+    }
 }

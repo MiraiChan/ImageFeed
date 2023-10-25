@@ -41,16 +41,16 @@ private extension OAuth2Service {
         let createdAt: Int
     }
     
-    func authTokenRequest(code: String) -> URLRequest? {//Функция для создания URLRequest с заданным code.
+    func authTokenRequest(code: String) -> URLRequest? {
         return requestBuilder.makeHTTPRequest(
             path: "/oauth/token"
             + "?client_id=\(AuthConfiguration.standard.accessKey)"
             + "&&client_secret=\(AuthConfiguration.standard.secretKey)"
             + "&&redirect_uri=\(AuthConfiguration.standard.redirectURI)"
             + "&&code=\(code)"
-            + "&&grant_type=authorization_code",
-            httpMethod: "POST",
-            baseURLString: "https://unsplash.com"
+            + "&&grant_type=\(AuthConfigConstants.tokenRequestGrantTypeString)",
+            httpMethod: AuthConfigConstants.postMethodString,
+            baseURLString: AuthConfigConstants.baseURLString
         )
     }
 }
@@ -85,5 +85,3 @@ extension OAuth2Service {
         }
     }
 }
-
-

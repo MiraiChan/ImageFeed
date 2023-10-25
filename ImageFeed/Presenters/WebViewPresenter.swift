@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Protocol
+
 public protocol WebViewPresenterProtocol {
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
@@ -14,20 +16,26 @@ public protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
 }
 
+// MARK: - Class
+
 final class WebViewPresenter: WebViewPresenterProtocol {
-    weak var view: WebViewViewControllerProtocol?
     
+    // MARK: - Public properties
+    
+    weak var view: WebViewViewControllerProtocol?
     var authHelper: AuthHelperProtocol
+    
+    // MARK: - Init
     
     init(authHelper: AuthHelperProtocol) {
         self.authHelper = authHelper
     }
     
+    // MARK: - Methods
+    
     func viewDidLoad() {
         let request = authHelper.authRequest()
-        
         didUpdateProgressValue(0)
-        
         view?.load(request: request)
     }
     
@@ -39,6 +47,7 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         view?.setProgressHidden(shouldHideProgress)
     }
     
+    // non-private for Unit testing
     func shouldHideProgress(for value: Float) -> Bool {
         abs(value - 1.0) <= 0.0001
     }

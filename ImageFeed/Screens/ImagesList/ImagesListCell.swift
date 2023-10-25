@@ -17,10 +17,10 @@ public final class ImagesListCell: UITableViewCell {
     private let placeholderImage = UIImage(named: "stub")
     weak var delegate: ImagesListCellDelegate?
     
-    @IBOutlet weak var cellImage: UIImageView!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var gradientView: UIView!
+    @IBOutlet private weak var cellImage: UIImageView!
+    @IBOutlet private weak var likeButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet private weak var gradientView: UIView!
     
     public override func prepareForReuse() {
         super.prepareForReuse()
@@ -60,7 +60,7 @@ public final class ImagesListCell: UITableViewCell {
                 status = true
             case .failure(let error):
                 cellImage.image = placeholderImage
-                print("\(error.localizedDescription)")
+                preconditionFailure("\(error.localizedDescription)")
             }
         }
         return status

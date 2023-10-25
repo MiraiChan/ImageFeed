@@ -7,6 +7,9 @@
 
 import Foundation
 import UIKit
+import Kingfisher
+
+// MARK: - Protocol
 
 public protocol ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
@@ -20,20 +23,31 @@ public protocol ImagesListPresenterProtocol {
     func getPhotoStructure(indexPath: IndexPath) -> Photo?
 }
 
+// MARK: - Class
+
 final class ImagesListPresenter {
+    
+    // MARK: - Private properties
+    
     private var imagesListService = ImagesListService.shared
+    
+    // MARK: - Public properties
     
     weak var view: ImagesListViewControllerProtocol?
     var photos: [Photo] = []
     var totalNumberOfPhotos: Int {
         photos.count
     }
+    // MARK: - Public method
     
+    // non-private for unit tests
     func setupImageListService() {
         imagesListService.fetchPhotosNextPage()
         updateTableViewAnimated()
     }
 }
+
+// MARK: - ImagesListPresenterProtocol
 
 extension ImagesListPresenter: ImagesListPresenterProtocol {
     func viewDidLoad() {
@@ -85,7 +99,7 @@ extension ImagesListPresenter: ImagesListPresenterProtocol {
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 UIBlockingProgressHUD.dismiss()
-                print("\(error.localizedDescription)")
+                preconditionFailure("\(error.localizedDescription)")
             }
         }
     }
@@ -93,4 +107,18 @@ extension ImagesListPresenter: ImagesListPresenterProtocol {
     func getPhotoStructure(indexPath: IndexPath) -> Photo? {
         photos[indexPath.row]
     }
+}
+
+// MARK: - Private methods
+
+private extension ImagesListPresenter {
+  func setupKfCache() {
+    let cache = ImageCache.default
+    cache.memoryStorage.config.totalCostLimit = 300 * 1024 * 1024
+    cache.memoryStorage.config.countLimit = 150
+    cache.diskStorage.config.sizeLimit = 1024 * 1024 * 1024
+    cache.memoryStorage.config.expiration = .seconds(600)
+    cache.diskStorage.config.expiration = .days(10)
+    cache.memoryStorage.config.cleanInterval = 300
+  }
 }

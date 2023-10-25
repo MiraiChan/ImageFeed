@@ -40,8 +40,7 @@ final class ImagesListViewController: UIViewController {
                 super.prepare(for: segue, sender: sender)
                 return
             }
-            guard let photo = presenter.getPhotoStructure(indexPath: indexPath) else {
-                preconditionFailure("Failed to retrieve photo from the array")}
+            guard let photo = presenter.getPhotoStructure(indexPath: indexPath) else { return }
             
             viewController.largeImageURL = URL(string: photo.largeImageURL)
         } else {
@@ -92,7 +91,7 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         cell.delegate = self
         guard let photo = presenter.getPhotoStructure(indexPath: indexPath) else {
-            preconditionFailure("Failed to retrieve photo from the array")
+            return cell
         }
         if cell.loadCell(from: photo) {
             tableView.reloadRows(at: [indexPath], with: .automatic)

@@ -9,6 +9,7 @@ import Foundation
 import WebKit
 import Kingfisher
 
+// MARK: - Protocol
 
 public protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? { get set }
@@ -16,13 +17,23 @@ public protocol ProfilePresenterProtocol {
     func resetAccount()
 }
 
+// MARK: - Class
+
 final class ProfilePresenter {
+    
+    // MARK: - Public properties
+    
     weak var view: ProfileViewControllerProtocol?
+    
+    // MARK: - Private properties
     
     private let profileImageService = ProfileImageService.shared
     private let profileService = ProfileService.shared
     private var oauth2TokenStorage = OAuth2TokenStorage.shared
 }
+
+// MARK: - ProfilePresenterProtocol
+
 extension ProfilePresenter: ProfilePresenterProtocol {
     
     func viewDidLoad() {
@@ -37,35 +48,41 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         cleanCookies()
         switchToSplashViewController()
     }
+}
+
+// MARK: - Private methods
+
+private extension ProfilePresenter {
     
-    private func checkAvatar() {
+    func checkAvatar() {
         if let url = profileImageService.avatarURL {
             view?.updateAvatar(url: url)
         }
     }
     
-    private func checkProfile() {
+    func checkProfile() {
         guard let profile = profileService.profile else {
             return
         }
         view?.loadProfile(profile)
     }
-    private func resetToken() {
+    
+    func resetToken() {
         guard oauth2TokenStorage.removeToken() else {
             assertionFailure("Failed remove token")
             return
         }
     }
     
-    private func resetView() {
+    func resetView() {
         view?.loadProfile(nil)
     }
     
-    private func resetPhotos() {
+    func resetPhotos() {
         ImagesListService.shared.resetPhotos()
     }
     
-    private func cleanCookies() {
+    func cleanCookies() {
         HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
         WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
             records.forEach { record in
@@ -74,7 +91,7 @@ extension ProfilePresenter: ProfilePresenterProtocol {
         }
     }
     
-    private func switchToSplashViewController() {
+    func switchToSplashViewController() {
         
         guard let window = UIApplication.shared.windows.first else {
             preconditionFailure("Invalid Configuration") }

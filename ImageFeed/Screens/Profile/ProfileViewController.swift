@@ -15,10 +15,10 @@ public protocol ProfileViewControllerProtocol: AnyObject {
 }
 
 final class ProfileViewController: UIViewController {
-    private var label1 = UILabel()
-    private var label2 = UILabel()
-    private var label3 = UILabel()
-    private let imageView = UIImageView()
+    private var profileUserNameLabel = UILabel()
+    private var profileLoginNameLabel = UILabel()
+    private var profileBioLabel = UILabel()
+    private let profileUserPhotoImage = UIImageView()
     private var logoutButton: UIButton!
     
     
@@ -88,24 +88,24 @@ private extension ProfileViewController {
     }
     
     private func setupImageView() {
-        imageView.image = profileImagePlaceholder
-        imageView.tintColor = .gray
+        profileUserPhotoImage.image = profileImagePlaceholder
+        profileUserPhotoImage.tintColor = .gray
         
-        imageView.accessibilityIdentifier = "ProfilePhoto"
+        profileUserPhotoImage.accessibilityIdentifier = "ProfilePhoto"
         
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
+        profileUserPhotoImage.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileUserPhotoImage)
         
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        profileUserPhotoImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        profileUserPhotoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        profileUserPhotoImage.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        profileUserPhotoImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
     }
     
     private func setupLabel() {
         
-        label1.accessibilityIdentifier = "ProfileName"
-        label1.textColor = .ypWhite
+        profileUserNameLabel.accessibilityIdentifier = "ProfileName"
+        profileUserNameLabel.textColor = .ypWhite
         let font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 18 / font.pointSize
@@ -113,34 +113,34 @@ private extension ProfileViewController {
             .font: font,
             .paragraphStyle: paragraphStyle
         ]
-        label1.attributedText = NSAttributedString(string: label1.text ?? "", attributes: attributes)
+        profileUserNameLabel.attributedText = NSAttributedString(string: profileUserNameLabel.text ?? "", attributes: attributes)
         
-        label1.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label1)
-        label1.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        label1.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
+        profileUserNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileUserNameLabel)
+        profileUserNameLabel.leadingAnchor.constraint(equalTo: profileUserPhotoImage.leadingAnchor).isActive = true
+        profileUserNameLabel.topAnchor.constraint(equalTo: profileUserPhotoImage.bottomAnchor, constant: 20).isActive = true
         
-        label2.accessibilityIdentifier = "ProfileLogin"
-        label2.textColor = .ypGray
+        profileLoginNameLabel.accessibilityIdentifier = "ProfileLogin"
+        profileLoginNameLabel.textColor = .ypGray
         let font2 = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
         let attributes2: [NSAttributedString.Key: Any] = [
             .font: font2,
             .paragraphStyle: paragraphStyle
         ]
-        label2.attributedText = NSAttributedString(string: label2.text ?? "", attributes: attributes2)
-        label2.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label2)
-        label2.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
-        label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 20).isActive = true
+        profileLoginNameLabel.attributedText = NSAttributedString(string: profileLoginNameLabel.text ?? "", attributes: attributes2)
+        profileLoginNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileLoginNameLabel)
+        profileLoginNameLabel.leadingAnchor.constraint(equalTo: profileUserNameLabel.leadingAnchor).isActive = true
+        profileLoginNameLabel.topAnchor.constraint(equalTo: profileUserNameLabel.bottomAnchor, constant: 20).isActive = true
         
-        label3.accessibilityIdentifier = "ProfileBio"
-        label3.textColor = .ypWhite
+        profileBioLabel.accessibilityIdentifier = "ProfileBio"
+        profileBioLabel.textColor = .ypWhite
         let font3 = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label3.font = font3
-        label3.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label3)
-        label3.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
-        label3.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 20).isActive = true
+        profileBioLabel.font = font3
+        profileBioLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileBioLabel)
+        profileBioLabel.leadingAnchor.constraint(equalTo: profileUserNameLabel.leadingAnchor).isActive = true
+        profileBioLabel.topAnchor.constraint(equalTo: profileLoginNameLabel.bottomAnchor, constant: 20).isActive = true
     }
     
     private func setupButton() {
@@ -156,21 +156,21 @@ private extension ProfileViewController {
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        logoutButton.centerYAnchor.constraint(equalTo: profileUserPhotoImage.centerYAnchor).isActive = true
     }
 }
 extension ProfileViewController: ProfileViewControllerProtocol {
     
     func loadProfile(_ profile: Profile?) {
         if let profile = profileService.profile {
-            label1.text = profile.name
-            label2.text = profile.loginName
-            label3.text = profile.bio
+            profileUserNameLabel.text = profile.name
+            profileLoginNameLabel.text = profile.loginName
+            profileBioLabel.text = profile.bio
         } else {
-            label1.text = "Error. User's name not found."
-            label2.text = "Error"
-            label3.text = "Error"
-            imageView.image = profileImagePlaceholder
+            profileUserNameLabel.text = "Error. User's name not found."
+            profileLoginNameLabel.text = "Error"
+            profileBioLabel.text = "Error"
+            profileUserPhotoImage.image = profileImagePlaceholder
         }
     }
     
@@ -180,9 +180,9 @@ extension ProfileViewController: ProfileViewControllerProtocol {
         cache.clearDiskCache()
         
         let processor = RoundCornerImageProcessor(cornerRadius: 61)
-        imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: url,
-                              placeholder: UIImage(named: "user_picture"),
-                              options: [.processor(processor)])
+        profileUserPhotoImage.kf.indicatorType = .activity
+        profileUserPhotoImage.kf.setImage(with: url,
+                                          placeholder: UIImage(named: "user_picture"),
+                                          options: [.processor(processor)])
     }
 }

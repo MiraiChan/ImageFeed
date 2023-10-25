@@ -21,7 +21,7 @@ final class WebViewTests: XCTestCase {
         _ = viewController.view
         
         //then
-        XCTAssertTrue(presenter.viewDidLoadCalled) //behaviour verification
+        XCTAssertTrue(presenter.viewDidLoadCalled)
     }
     
     func testPresenterCallsLoadRequest() {
@@ -78,13 +78,13 @@ final class WebViewTests: XCTestCase {
         XCTAssertTrue(urlString.contains(configuration.authURLString))
         XCTAssertTrue(urlString.contains(configuration.accessKey))
         XCTAssertTrue(urlString.contains(configuration.redirectURI))
-        XCTAssertTrue(urlString.contains("code"))
+        XCTAssertTrue(urlString.contains(AuthConfigConstants.code))
         XCTAssertTrue(urlString.contains(configuration.accessScope))
     }
     
     func testCodeFromURL() {
         //given
-        var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize/native")!
+        var urlComponents = URLComponents(string: AuthConfigConstants.authorizedURLPath)!
         urlComponents.queryItems = [URLQueryItem(name: "code", value: "test code")]
         let url = urlComponents.url!
         let authHelper = AuthHelper()

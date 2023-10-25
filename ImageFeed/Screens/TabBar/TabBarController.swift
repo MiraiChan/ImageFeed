@@ -43,7 +43,12 @@ final class TabBarController: UITabBarController {
             image: UIImage(named: "tab_profile_active"),
             selectedImage: nil
         )
-
+        
+        imagesListViewController.tabBarItem = UITabBarItem(
+            title: nil,
+            image: UIImage(named: "tab_editorial_active"),
+            selectedImage: nil
+        )
         
         self.viewControllers = [imagesListViewController, profileViewController]
         selectedIndex = 0

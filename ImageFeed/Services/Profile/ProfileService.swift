@@ -26,7 +26,7 @@ final class ProfileService {
 private extension ProfileService {
     
     func makeProfileRequest() -> URLRequest? {
-        requestBuilder.makeHTTPRequest(path: "/me")
+        requestBuilder.makeHTTPRequest(path: AuthConfigConstants.profileRequestPathString)
     }
 }
 

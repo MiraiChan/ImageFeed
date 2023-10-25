@@ -11,7 +11,7 @@ import UIKit
 final class SingleImageViewController: UIViewController {
     private var alertPresenter: AlertPresenterProtocol?
     
-    var image: UIImage! {
+    var image: UIImage? {
         didSet {
             guard isViewLoaded else { return }
             imageView.image = image
@@ -22,8 +22,8 @@ final class SingleImageViewController: UIViewController {
     
     var largeImageURL: URL?
     
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var backButton: UIButton!
     @IBOutlet private weak var shareButton: UIButton!
     
@@ -57,7 +57,9 @@ final class SingleImageViewController: UIViewController {
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         UIView.animate(withDuration: 0.6) {
-            self.rescaleAndCenterImageInScrollView(image: self.image)
+            if let image = self.image {
+                self.rescaleAndCenterImageInScrollView(image: image)
+            }
         }
     }
     

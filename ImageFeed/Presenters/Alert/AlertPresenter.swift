@@ -24,7 +24,7 @@ final class AlertPresenter {
     }
 }
 
-// MARK: - AlertPresenting
+// MARK: - AlertPresenterProtocol
 
 extension AlertPresenter: AlertPresenterProtocol {
     

@@ -38,7 +38,7 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     func calculateHeight(indexPath: IndexPath) -> CGFloat {
         heightCalculatorWasCalled = true
         if indexPath == IndexPath(row: 1, section: 0) {
-        heightCalculatorGotIndexPath = true
+            heightCalculatorGotIndexPath = true
         }
         return CGFloat(100)
     }
@@ -47,14 +47,14 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     func photosPerPageChecker(indexPath: IndexPath) {
         photosCheckerWasCalled = true
         if indexPath == IndexPath(row: 1, section: 0) {
-        photosCheckerGotIndex = true
+            photosCheckerGotIndex = true
         }
     }
     
     func getPhotoStructure(indexPath: IndexPath) -> ImageFeed.Photo? {
         photoStructureWasCalled = true
         if indexPath == IndexPath(row: 1, section: 0) {
-        photoStructureGotIndex = true
+            photoStructureGotIndex = true
         }
         return nil
     }
@@ -62,7 +62,7 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     func imagesListCellDidTapLike(_ cell: ImageFeed.ImagesListCell, indexPath: IndexPath) {
         tapLikeWasCalled = true
         if indexPath == IndexPath(row: 1, section: 0) {
-        tapLikeGotIndex = true
+            tapLikeGotIndex = true
         }
     }
 }
