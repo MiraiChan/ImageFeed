@@ -9,9 +9,9 @@ import Foundation
 import UIKit
 
 final class SingleImageViewController: UIViewController {
-    private var alertPresenter: AlertPresenting?
+    private var alertPresenter: AlertPresenterProtocol?
     
-    var image: UIImage! {
+    var image: UIImage? {
         didSet {
             guard isViewLoaded else { return }
             imageView.image = image
@@ -22,13 +22,16 @@ final class SingleImageViewController: UIViewController {
     
     var largeImageURL: URL?
     
-    @IBOutlet private var imageView: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var backButton: UIButton!
     @IBOutlet private weak var shareButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        backButton.accessibilityIdentifier = "BackButton"
+        
         view.backgroundColor = .ypBlack
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
@@ -54,7 +57,9 @@ final class SingleImageViewController: UIViewController {
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         UIView.animate(withDuration: 0.6) {
-            self.rescaleAndCenterImageInScrollView(image: self.image)
+            if let image = self.image {
+                self.rescaleAndCenterImageInScrollView(image: image)
+            }
         }
     }
     
@@ -107,6 +112,7 @@ final class SingleImageViewController: UIViewController {
         }
     }
 }
+
 extension SingleImageViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         imageView

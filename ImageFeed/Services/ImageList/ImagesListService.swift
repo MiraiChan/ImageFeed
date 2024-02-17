@@ -59,11 +59,10 @@ final class ImagesListService {
     func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Bool, Error>) -> Void) {
         assert(Thread.isMainThread)
         guard currentTask == nil else { return }
-        let method = isLike ? "POST" : "DELETE"
+        let method = isLike ? AuthConfigConstants.postMethodString : AuthConfigConstants.deleteMethodString
         
         guard let request = makeLikeRequest(for: photoId, with: method) else {
             assertionFailure("Invalid request")
-            print(NetworkError.invalidRequest)
             return
         }
         
@@ -114,12 +113,11 @@ final class ImagesListService {
         
         guard let request = makePhotosListRequest(page: nextPage) else {
             assertionFailure("Invalid request")
-            print(NetworkError.invalidRequest)
             return
         }
         
         let task = session.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
-            guard let self else { preconditionFailure("Cannot make weak link") }
+            guard let self else { return }
             switch result {
             case .success(let photoResults):
                 DispatchQueue.main.async {
@@ -132,7 +130,7 @@ final class ImagesListService {
                     self.lastLoadedPage = nextPage
                 }
             case .failure(let error):
-                print("\(String(describing: error))")
+                preconditionFailure("Failed to fetch photos due to error: \(error).Please try again later.")
             }
             self.currentTask = nil
         }
