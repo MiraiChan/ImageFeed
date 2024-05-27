@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Protocol
 
-protocol AlertPresenting: AnyObject {
+protocol AlertPresenterProtocol: AnyObject {
     func showAlert(for result: AlertModel)
 }
 
@@ -24,15 +24,18 @@ final class AlertPresenter {
     }
 }
 
-// MARK: - AlertPresenting
+// MARK: - AlertPresenterProtocol
 
-extension AlertPresenter: AlertPresenting {
+extension AlertPresenter: AlertPresenterProtocol {
     
     func showAlert(for result: AlertModel) {
         let alert = UIAlertController(
             title: result.title,
             message: result.message,
             preferredStyle: .alert)
+        
+        alert.view.accessibilityIdentifier = "Alert"
+        
         let alertAction = UIAlertAction(title: result.buttonText, style: .default) { _ in
             result.completion?()
         }

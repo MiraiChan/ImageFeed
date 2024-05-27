@@ -11,18 +11,18 @@ protocol ImagesListCellDelegate: AnyObject {
     func imagesListCellDidTapLike(_ cell: ImagesListCell)
 }
 
-final class ImagesListCell: UITableViewCell {
+public final class ImagesListCell: UITableViewCell {
     
     static let reuseIdentifier = "ImagesListCell"
     private let placeholderImage = UIImage(named: "stub")
     weak var delegate: ImagesListCellDelegate?
     
-    @IBOutlet weak var cellImage: UIImageView!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var gradientView: UIView!
+    @IBOutlet private weak var cellImage: UIImageView!
+    @IBOutlet private weak var likeButton: UIButton!
+    @IBOutlet private weak var dateLabel: UILabel!
+    @IBOutlet private weak var gradientView: UIView!
     
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         super.prepareForReuse()
         cellImage.kf.cancelDownloadTask()
     }
@@ -46,6 +46,7 @@ final class ImagesListCell: UITableViewCell {
         } else {
             dateLabel.text = ""
         }
+        likeButton.accessibilityIdentifier = "LikeButton"
         
         setIsLiked(photo.isLiked)
         
@@ -59,7 +60,7 @@ final class ImagesListCell: UITableViewCell {
                 status = true
             case .failure(let error):
                 cellImage.image = placeholderImage
-                print("\(error.localizedDescription)")
+                preconditionFailure("\(error.localizedDescription)")
             }
         }
         return status

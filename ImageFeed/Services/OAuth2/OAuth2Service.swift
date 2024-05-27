@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit
 
 final class OAuth2Service {
     
@@ -41,63 +40,20 @@ private extension OAuth2Service {
         let scope: String
         let createdAt: Int
     }
-}
-
-private extension OAuth2Service {
     
-    // Вспомогательная функция для получения своего профиля
-    var selfProfileRequest: URLRequest? {
-        requestBuilder.makeHTTPRequest(path: "/me", httpMethod: "GET")
-    }
-    
-    /// Вспомогательная функция для получения картинки профиля
-    func profileImageURLRequest(userName: String) -> URLRequest? {
-        requestBuilder.makeHTTPRequest(
-            path: "/users/\(userName)",
-            httpMethod: "GET"
-        )
-    }
-    
-    /// Вспомогательная функция для получения картинок
-    func photosRequest(page: Int, perPage: Int) -> URLRequest? {
-        requestBuilder.makeHTTPRequest(
-            path: "/photos"
-            + "?page=\(page)"
-            + "&&per_page=\(perPage)",
-            httpMethod: "GET"
-        )
-    }
-    
-    /// Вспомогательная функция для получения лайкнутых картинок
-    func likeRequest(photoId: String) -> URLRequest? {
-        requestBuilder.makeHTTPRequest(
-            path: "/photos/\(photoId)/like",
-            httpMethod: "POST"
-        )
-    }
-    
-    /// Вспомогательная функция для получения не лайкнутых картинок
-    func unlikeRequest(photoId: String) -> URLRequest? {
-        requestBuilder.makeHTTPRequest(
-            path: "/photos/\(photoId)/like",
-            httpMethod: "DELETE"
-        )
-    }
-    
-    func authTokenRequest(code: String) -> URLRequest? {//Функция для создания URLRequest с заданным code.
+    func authTokenRequest(code: String) -> URLRequest? {
         return requestBuilder.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(accessKey)"
-            + "&&client_secret=\(secretKey)"
-            + "&&redirect_uri=\(redirectURI)"
+            + "?client_id=\(AuthConfiguration.standard.accessKey)"
+            + "&&client_secret=\(AuthConfiguration.standard.secretKey)"
+            + "&&redirect_uri=\(AuthConfiguration.standard.redirectURI)"
             + "&&code=\(code)"
-            + "&&grant_type=authorization_code",
-            httpMethod: "POST",
-            baseURLString: "https://unsplash.com"
+            + "&&grant_type=\(AuthConfigConstants.tokenRequestGrantTypeString)",
+            httpMethod: AuthConfigConstants.postMethodString,
+            baseURLString: AuthConfigConstants.baseURLString
         )
     }
 }
-
 
 extension OAuth2Service {
     func fetchAuthToken(_ code: String, completion: @escaping (Result<String, Error>) -> Void) {
@@ -114,7 +70,7 @@ extension OAuth2Service {
         
         task = urlSession.objectTask (for: request) {
             [weak self] (result: Result<OAuthTokenResponseBody, Error>) in
-            guard let self else { preconditionFailure("Cannot make weak link") }
+            guard let self else { return }
             self.task = nil
             switch result {
             case .success(let body):
@@ -129,5 +85,3 @@ extension OAuth2Service {
         }
     }
 }
-
-

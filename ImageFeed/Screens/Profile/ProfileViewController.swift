@@ -3,42 +3,44 @@
 //  ImageFeed
 //
 //  Created by Almira Khafizova on 15.08.23.
-//
+
 
 import UIKit
 import Kingfisher
-import WebKit
+
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? { get set }
+    func updateAvatar(url: URL)
+    func loadProfile(_ profile: Profile?)
+}
 
 final class ProfileViewController: UIViewController {
-    private var label1: UILabel!
-    private var label2 = UILabel()
-    private var label3 = UILabel()
-    private let imageView = UIImageView()
+    private var profileUserNameLabel = UILabel()
+    private var profileLoginNameLabel = UILabel()
+    private var profileBioLabel = UILabel()
+    private let profileUserPhotoImage = UIImageView()
     private var logoutButton: UIButton!
     
-    private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private var alertPresenter: AlertPresenting?
+    private var alertPresenter: AlertPresenterProtocol?
     private var profileImageServiceObserver: NSObjectProtocol?
+    
+    var presenter: ProfilePresenterProtocol?
+    let profileImagePlaceholder = UIImage(named: "user_picture")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypBlack
         alertPresenter = AlertPresenter(viewController: self)
+        presenter?.viewDidLoad()
         
-        checkAvatar()
-        
-        updateProfileDetails(profile: profileService.profile)
+        NotificationObserver()
         
         setupImageView()
         setupLabel()
         setupButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadProfile()
     }
 }
 
@@ -58,25 +60,7 @@ private extension ProfileViewController {
         updateAvatar(url: url)
     }
     
-    func checkAvatar() {
-        if let url = profileImageService.avatarURL{
-            updateAvatar(url: url)
-        }
-    }
-    
-    func updateAvatar(url: URL) {
-        let cache = ImageCache.default
-        cache.clearMemoryCache()
-        cache.clearDiskCache()
-        
-        let processor = RoundCornerImageProcessor(cornerRadius: 61)
-        imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: url,
-                              placeholder: UIImage(named: "user_picture"),
-                              options: [.processor(processor)])
-    }
-    
-    func updateProfileDetails(profile: Profile?) {
+    func NotificationObserver() {
         profileImageServiceObserver = NotificationCenter.default.addObserver(
             forName: ProfileImageService.didChangeNotification,
             object: nil,
@@ -88,18 +72,6 @@ private extension ProfileViewController {
         )
     }
     
-    func loadProfile() {
-        if let profile = profileService.profile {
-            label1.text = profile.name
-            label2.text = profile.loginName
-            label3.text = profile.bio
-        } else {
-            label1.text = "Error"
-            label2.text = "Error"
-            label3.text = "Error"
-        }
-    }
-    
     func showAlert() {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
@@ -107,7 +79,7 @@ private extension ProfileViewController {
                 title: "Пока, пока!",
                 message: "Уверены, что хотите выйти?",
                 buttonText: "Да",
-                completion: { self.resetAccount() },
+                completion: { self.presenter?.resetAccount() },
                 secondButtonText: "Нет",
                 secondCompletion: { self.dismiss(animated: true) }
             )
@@ -115,29 +87,25 @@ private extension ProfileViewController {
         }
     }
     
-    func switchToSplashViewController() {
-        
-        guard let window = UIApplication.shared.windows.first else { preconditionFailure("Invalid Configuration") }
-        let splashViewController = SplashViewController()
-        window.rootViewController = splashViewController
-    }
-    
     private func setupImageView() {
-        let profileImage = UIImage(named: "user_picture")
-        imageView.image = profileImage
-        imageView.tintColor = .gray
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(imageView)
-        imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
-        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        profileUserPhotoImage.image = profileImagePlaceholder
+        profileUserPhotoImage.tintColor = .gray
+        
+        profileUserPhotoImage.accessibilityIdentifier = "ProfilePhoto"
+        
+        profileUserPhotoImage.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileUserPhotoImage)
+        
+        profileUserPhotoImage.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+        profileUserPhotoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+        profileUserPhotoImage.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        profileUserPhotoImage.heightAnchor.constraint(equalToConstant: 70).isActive = true
     }
     
     private func setupLabel() {
-        let label1 = UILabel()
-        label1.text = "Екатерина Новикова"
-        label1.textColor = UIColor(named: "YP White")
+        
+        profileUserNameLabel.accessibilityIdentifier = "ProfileName"
+        profileUserNameLabel.textColor = .ypWhite
         let font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 18 / font.pointSize
@@ -145,39 +113,34 @@ private extension ProfileViewController {
             .font: font,
             .paragraphStyle: paragraphStyle
         ]
-        label1.attributedText = NSAttributedString(string: label1.text ?? "", attributes: attributes)
+        profileUserNameLabel.attributedText = NSAttributedString(string: profileUserNameLabel.text ?? "", attributes: attributes)
         
-        label1.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label1)
-        label1.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        label1.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
-        self.label1 = label1
+        profileUserNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileUserNameLabel)
+        profileUserNameLabel.leadingAnchor.constraint(equalTo: profileUserPhotoImage.leadingAnchor).isActive = true
+        profileUserNameLabel.topAnchor.constraint(equalTo: profileUserPhotoImage.bottomAnchor, constant: 20).isActive = true
         
-        let label2 = UILabel()
-        label2.text = "@ekaterina_nov"
-        label2.textColor = UIColor(named: "YP Gray")
+        profileLoginNameLabel.accessibilityIdentifier = "ProfileLogin"
+        profileLoginNameLabel.textColor = .ypGray
         let font2 = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
         let attributes2: [NSAttributedString.Key: Any] = [
             .font: font2,
             .paragraphStyle: paragraphStyle
         ]
-        label2.attributedText = NSAttributedString(string: label2.text ?? "", attributes: attributes2)
-        label2.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label2)
-        label2.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
-        label2.topAnchor.constraint(equalTo: label1.bottomAnchor, constant: 20).isActive = true
-        self.label2 = label2
+        profileLoginNameLabel.attributedText = NSAttributedString(string: profileLoginNameLabel.text ?? "", attributes: attributes2)
+        profileLoginNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileLoginNameLabel)
+        profileLoginNameLabel.leadingAnchor.constraint(equalTo: profileUserNameLabel.leadingAnchor).isActive = true
+        profileLoginNameLabel.topAnchor.constraint(equalTo: profileUserNameLabel.bottomAnchor, constant: 20).isActive = true
         
-        let label3 = UILabel()
-        label3.text = "Hello, world!"
-        label3.textColor = UIColor(named: "YP White")
+        profileBioLabel.accessibilityIdentifier = "ProfileBio"
+        profileBioLabel.textColor = .ypWhite
         let font3 = UIFont.systemFont(ofSize: 13, weight: .regular)
-        label3.font = font3
-        label3.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label3)
-        label3.leadingAnchor.constraint(equalTo: label1.leadingAnchor).isActive = true
-        label3.topAnchor.constraint(equalTo: label2.bottomAnchor, constant: 20).isActive = true
-        self.label3 = label3
+        profileBioLabel.font = font3
+        profileBioLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(profileBioLabel)
+        profileBioLabel.leadingAnchor.constraint(equalTo: profileUserNameLabel.leadingAnchor).isActive = true
+        profileBioLabel.topAnchor.constraint(equalTo: profileLoginNameLabel.bottomAnchor, constant: 20).isActive = true
     }
     
     private func setupButton() {
@@ -186,48 +149,40 @@ private extension ProfileViewController {
             target: self,
             action: #selector(self.didTapButton)
         )
+        
+        logoutButton.accessibilityIdentifier = "LogoutButton"
+        
         logoutButton.tintColor = .ypRed
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(logoutButton)
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20).isActive = true
-        logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
+        logoutButton.centerYAnchor.constraint(equalTo: profileUserPhotoImage.centerYAnchor).isActive = true
     }
 }
-
-private extension ProfileViewController {
+extension ProfileViewController: ProfileViewControllerProtocol {
     
-    func resetAccount() {
-        resetToken()
-        resetView()
-        resetPhotos()
-        cleanCookies()
-        switchToSplashViewController()
-    }
-    
-    func resetToken() {
-        guard oauth2TokenStorage.removeToken() else {
-            assertionFailure("Cannot remove token")
-            return
+    func loadProfile(_ profile: Profile?) {
+        if let profile = profileService.profile {
+            profileUserNameLabel.text = profile.name
+            profileLoginNameLabel.text = profile.loginName
+            profileBioLabel.text = profile.bio
+        } else {
+            profileUserNameLabel.text = "Error. User's name not found."
+            profileLoginNameLabel.text = "Error"
+            profileBioLabel.text = "Error"
+            profileUserPhotoImage.image = profileImagePlaceholder
         }
     }
     
-    func resetView() {
-        self.label1.text = "User's name"
-        self.label2.text = ""
-        self.label3.text = ""
-        self.imageView.image = UIImage(named: "user_picture")
-    }
-    
-    func resetPhotos() {
-        ImagesListService.shared.resetPhotos()
-    }
-    
-    func cleanCookies() {
-        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-            records.forEach { record in
-                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record]) { }
-            }
-        }
+    func updateAvatar(url: URL) {
+        let cache = ImageCache.default
+        cache.clearMemoryCache()
+        cache.clearDiskCache()
+        
+        let processor = RoundCornerImageProcessor(cornerRadius: 61)
+        profileUserPhotoImage.kf.indicatorType = .activity
+        profileUserPhotoImage.kf.setImage(with: url,
+                                          placeholder: UIImage(named: "user_picture"),
+                                          options: [.processor(processor)])
     }
 }

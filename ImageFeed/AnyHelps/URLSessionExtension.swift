@@ -6,13 +6,17 @@
 //
 import Foundation
 
-enum NetworkError: Error {
+// MARK: - Enum
+
+private enum NetworkError: Error {
     case httpStatusCode(Int)
     case urlRequestError(Error)
     case urlSessionError
     case decodingError
     case invalidRequest
 }
+
+// MARK: - Public methods
 
 extension URLSession {
     
