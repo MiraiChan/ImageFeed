@@ -41,3 +41,6 @@ To use the application you must have an account in the [Unsplash](https://unspla
 [Design Figma](https://www.figma.com/file/HyDfKh5UVPOhPZIhBqIm3q/Image-Feed-(YP)?type=design&node-id=318-1469&mode=design&t=f39mrpLLMUakOhoy-0)
 
 [Unsplash API](https://unsplash.com/documentation)
+
+## Screencast ##
+[Watch](https://drive.google.com/drive/folders/1y9y3Y7cAyfZP1KygKuzanoQuqHPl09Ng?usp=sharing)
